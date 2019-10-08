@@ -1,34 +1,66 @@
 const router = require('express').Router();
 const csv = require('csv-parser');
 const fs = require('fs');
+const axios = require('axios');
 let IngredientIndex = require('../models/ingredientIndex.model');
-var SpoonacularApi = require('spoonacular_api');
+let Ingredient = require('../models/ingredient.model');
+
 
 router.route('/').get((req, res) => {
     const file = "./assets/top-1k-ingredients.csv";
     var current_index;
-    var api = new SpoonacularApi.DefaultApi()
-    var q = "salmon with fusilli and no nuts"; // {String} The recipe search query.
-    var callback = function(error, data, response) {
-      if (error) {
-        console.error(error);
-      } else {
-        console.log('API called successfully. Returned data: ' + data);
-      }
-    };
+
     //api.analyzeARecipeSearchQuery(q, callback);
 
     IngredientIndex.findById("5d9b37a2a371e34b10cc2a87")
     .then(index => {
         current_index = index.ingredientIndex;
-        console.log(current_index);
+        continue_request = 0;
+        //console.log(current_index);
         fs.createReadStream(file)
         .pipe(csv())
         .on('data', (row) => {
-            current_index += 1;
-            //console.log(current_index);
-            //console.log(row);
-            
+            if(continue_request == 0){
+                continue_request +=1;
+                current_index += 1;
+                const req_str = 'https://api.spoonacular.com/food/ingredients/' + row.ID +  '/information'
+                axios.get(req_str, {
+                    params: {
+                    apiKey: '76a4d6fd5fe747da9a6cc645228c9e53', 
+                    }
+                }).then(resp => {
+                    const ingredientName = row.Ingredient;
+                    const ingredientType = resp.data.aisle;
+                    var ingredientImage; 
+                    var ingredientQuantityMeasureValue;
+                    if(resp.data.image){
+                        ingredientImage = "https://spoonacular.com/cdn/ingredients_100x100/" + resp.data.image;
+                    } else{
+                        ingredientImage = "";
+                    }
+                    if(resp.data.shoppingListUnits){
+                        if(resp.data.shoppingListUnits.length > 0){
+                            ingredientQuantityMeasureValue = resp.data.shoppingListUnits;
+                        }
+                        else{
+                            ingredientQuantityMeasureValue = [];
+                        }
+                    } else{
+                        ingredientQuantityMeasureValue = [];
+                    }
+                    const newIngredient = new Ingredient({
+                        ingredientName,
+                        ingredientType,
+                        ingredientImage,
+                        ingredientQuantityMeasureValue,
+                    });
+                    //console.log("made newIngredient!");
+                    newIngredient.save()
+                        .then(() => console.log('Ingredient added!'))
+                }).catch(err =>{
+                    console.log(err);
+                })
+            }
         })
         .on('end', () => {
             console.log('CSV file successfully processed');
