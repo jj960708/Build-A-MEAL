@@ -1,0 +1,44 @@
+{
+  "name": "bam",
+  "version": "1.0.0",
+  "description": "Build A Meal Web Application",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "client": "npm start --prefix client",
+    "server": "nodemon server",
+    "start": "node server",
+    "dev": "concurrently \" npm run server\" \"npm run client\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jj960708/Build-A-MEAL.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jj960708/Build-A-MEAL/issues"
+  },
+  "homepage": "https://github.com/jj960708/Build-A-MEAL#readme",
+  "dependencies": {
+    "async": "^3.1.0",
+    "await": "^0.2.6",
+    "bcryptjs": "^2.4.3",
+    "concurrent": "^0.3.2",
+    "config": "^3.2.2",
+    "cors": "^2.8.5",
+    "csv-parser": "^2.3.1",
+    "dotenv": "^8.1.0",
+    "express": "^4.17.1",
+    "express-validator": "^6.2.0",
+    "fs": "0.0.1-security",
+    "jsonwebtoken": "^8.5.1",
+    "link": "^0.1.5",
+    "mongoose": "^5.7.1",
+    "nodemon": "^1.19.3",
+    "request": "^2.88.0"
+  },
+  "devDependencies": {
+    "axios": "^0.19.0"
+  }
+}
