@@ -6,9 +6,10 @@ const InventoryIngredient = require('../models/inventoryIngredient.model');
 const { check, validationResult } = require("express-validator");
 
 router.get("/me", auth, async (req, res) => {
+    
     try{
         const inventory = await Inventory.findOne({user:req.user.id}).populate('user','name');
-        
+        console.log(inventory);
         if (!inventory){
             return res.status(404).json({msg:'There is no inventory for this user'})
         }
@@ -20,6 +21,31 @@ router.get("/me", auth, async (req, res) => {
 
     }
 
+});
+
+router.delete('/:id',auth, async(req, res) => {
+    const inventory = await Inventory.findOne({user:req.user.id}).populate('user','name');
+    
+    inventory.findByIdAndDelete(req.params.id)
+      .then(() => res.json('Inventory item deleted.'))
+      .catch(err => res.status(400).json('Error: ' + err));
+});
+
+router.post('/update/:id', auth, async(req, res) => {
+    const inventory = await Inventory.findOne({user:req.user.id}).populate('user','name');
+
+    inventory.findById(req.params.id)
+      .then(inventoryitem => {
+        inventoryitem.IngredientName = req.body.name;
+        inventoryitem.inventoryIngredientAdded = req.body.from;
+        inventoryitem.inventoryIngredientExpiration = req.body.expires;
+        inventoryitem.inventoryIngredientQuantity = req.body.quantity;
+  
+        inventoryitem.save()
+          .then(() => res.json('Inventory Item updated!'))
+          .catch(err => res.status(400).json('Error: ' + err));
+      })
+      .catch(err => res.status(400).json('Error: ' + err));
 });
 
 router.post('/',auth,async(req,res) =>{ 
@@ -67,12 +93,13 @@ router.post('/ingredients',auth,async(req,res)=>{
     IngredientField.inventoryIngredientExpiration = expires;
     IngredientField.inventoryIngredientQuantity = quantity;
     
+    console.log(IngredientField);
     try{
         inventoryIngredient = new InventoryIngredient(IngredientField);
         await inventoryIngredient.save();
         
-    
         const inventory = await Inventory.findOne({user:req.user.id});
+        console.log(inventory);
         inventory.IngredientName.unshift(inventoryIngredient);
         await inventory.save();
         res.json(inventory);

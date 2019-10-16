@@ -26,6 +26,8 @@ router.route('/').get((req, res) => {
                 const req_str = 'https://api.spoonacular.com/food/ingredients/' + row.ID +  '/information'
                 axios.get(req_str, {
                     params: {
+                    ingredients: 'apple, banana, sugar',
+                    number: '15',
                     apiKey: '76a4d6fd5fe747da9a6cc645228c9e53', 
                     }
                 }).then(resp => {

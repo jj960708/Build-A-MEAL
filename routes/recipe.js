@@ -8,3 +8,4 @@ axios.get(req_str, {
     apiKey: '76a4d6fd5fe747da9a6cc645228c9e53', 
     }
 })
+

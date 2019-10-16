@@ -4,11 +4,11 @@
   "description": "Build A Meal Web Application",
   "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "client-install": "npm install --prefix client",
+    "start": "node server.js",
+    "server": "nodemon server.js",
     "client": "npm start --prefix client",
-    "server": "nodemon server",
-    "start": "node server",
-    "dev": "concurrently \" npm run server\" \"npm run client\""
+    "dev": "concurrently \"npm run server\" \"npm run client\""
   },
   "repository": {
     "type": "git",
@@ -24,6 +24,7 @@
     "async": "^3.1.0",
     "await": "^0.2.6",
     "bcryptjs": "^2.4.3",
+    "classnames": "^2.2.6",
     "concurrent": "^0.3.2",
     "config": "^3.2.2",
     "cors": "^2.8.5",
@@ -33,9 +34,14 @@
     "express-validator": "^6.2.0",
     "fs": "0.0.1-security",
     "jsonwebtoken": "^8.5.1",
+    "jwt-decode": "^2.2.0",
     "link": "^0.1.5",
     "mongoose": "^5.7.1",
     "nodemon": "^1.19.3",
+    "react-redux": "^7.1.1",
+    "react-router-dom": "^5.1.2",
+    "redux": "^4.0.4",
+    "redux-thunk": "^2.3.0",
     "request": "^2.88.0"
   },
   "devDependencies": {
