@@ -23,9 +23,17 @@ export default class InventoryList extends Component {
     }
 
     componentDidMount(){
-        axios.get('http://localhost:5000/api/inventory/me')
+        let config = {
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+            'Accept': 'application/json',
+          },
+          withCredentials: true
+        }
+        axios.get('http://localhost:5000/api/inventory/me', config)
             .then(response => {
-                this.setState({ inventory: response.data})
+                console.log("here!!!\n");
+                console.log(response);
             }).catch(error => {
                 console.log(error);
             });

@@ -13,6 +13,7 @@ router.get("/me", auth, async (req, res) => {
         if (!inventory){
             return res.status(404).json({msg:'There is no inventory for this user'})
         }
+        console.log("here!!\n");
         return res.json(inventory)
 
     }catch(err){

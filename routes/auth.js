@@ -45,10 +45,12 @@ router.post(
       };
       jwt.sign(payload, jwtSecret, { expiresIn: 360000 }, (err, token) => {
         if (err) throw err;
+        res.cookie('token', token, { httpOnly: false }).sendStatus(200);
         res.json({ token });
       });
     } catch (err) {
       console.error(err.message);
+      
       res.status(500).send("Server Error");
     }
     // if user exists
