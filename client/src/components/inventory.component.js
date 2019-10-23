@@ -3,14 +3,22 @@ import { Link } from 'react-router-dom';
 import axios from 'axios';
 
 const InventoryItem = props => (
-    <tr>
-      <td>{props.item.IngredientName}</td>
-      <td>{props.item.inventoryIngredientQuantity}</td>
-      <td>{props.item.inventoryIngredientExpiration.substring(0,10)}</td>
-      <td>
+    <div className="card" style={{width: 18 + 'rem'}}>
+      <img className="card-img-top" src={props.item.ingredientImage} alt={props.item.IngredientName}/>
+      <div className="card-body">
+        <h5 className="card-title">{props.item.IngredientName}</h5>
+        <div className="card-text">
+          <p>
+            {props.item.inventoryIngredientQuantity}
+          </p>
+          <p>
+            {props.item.inventoryIngredientExpiration.substring(0,10)}
+          </p>
+        </div>
         <Link to={"/edit/"+props.item._id}>edit</Link> | <a href="#" onClick={() => { props.deleteInventoryItem(props.item._id) }}>delete</a>
-      </td>
-    </tr>
+      </div>
+    </div>
+
   )
 
 
@@ -24,17 +32,17 @@ export default class InventoryList extends Component {
 
     componentDidMount(){
         let config = {
-          headers: {
-            'Content-Type': 'application/x-www-form-urlencoded',
-            'Accept': 'application/json',
-          },
           withCredentials: true
         }
         axios.get('http://localhost:5000/api/inventory/me', config)
             .then(response => {
-                console.log("here!!!\n");
-                console.log(response);
-            }).catch(error => {
+                if(response.data.length > 0){
+                  this.setState({
+                    inventory: response.data
+                  })
+                }
+
+              }).catch(error => {
                 console.log(error);
             });
     }
@@ -49,7 +57,11 @@ export default class InventoryList extends Component {
 
     inventoryList() {
         return this.state.inventory.map(item => {
-          return <InventoryItem item={item} deleteInventoryItem={this.deleteInventoryItem} key={item._id}/>;
+          return (
+          <div className = "col-4-md">
+            <InventoryItem item={item} deleteInventoryItem={this.deleteInventoryItem} key={item._id}/>
+          </div>
+          );
         })
     }
 
@@ -57,18 +69,11 @@ export default class InventoryList extends Component {
         return(
         <div>
         <h3>Logged Item</h3>
-        <table className="table">
-          <thead className="thead-light">
-            <tr>
-              <th>Name</th>
-              <th>Expires</th>
-              <th>Quantity</th>
-            </tr>
-          </thead>
-          <tbody>
-            { this.inventoryList() }
-          </tbody>
-        </table>
+        <div className="container">
+          <div className = "row">
+              { this.inventoryList() }
+          </div>
+        </div>
       </div>
         )
     }
