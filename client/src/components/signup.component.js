@@ -65,7 +65,7 @@ export default class Login extends Component{
             <div className="card-body">
                 <h5 style={m_b_10} className="card-title">Sign Up</h5>
                 <form className="form-group" onSubmit={this.onSubmit}>
-                    <input style={m_b_10} className="form-control" type="text" placeholder="Enter Name" name="name" value={this.state.name} onChange={this.onChangeName} required/>
+                    <input style={m_b_10} className="form-control" type="text" placeholder="Enter Username" name="name" value={this.state.name} onChange={this.onChangeName} required/>
                     <input style={m_b_10} className="form-control" type="text" placeholder="Enter Email" name="email" value={this.state.email} onChange={this.onChangeEmail} required/>
                     <input style={m_b_10} className="form-control" type="password" placeholder="Enter Password" name="psw" value={this.state.password} onChange={this.onChangePassword} required/>
                     <button className="btn btn-primary" classtype="submit">Sign Up</button>
