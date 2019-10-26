@@ -1,0 +1,43 @@
+.ingredient-name{
+    background-color: rgb(70, 184, 80);
+    margin: 0;
+    color: white;
+    padding: 5px;
+    position: relative;
+    bottom: 250px;
+    opacity: .8;
+}
+
+.ingredient-delete{
+    float: right;
+    color: white;
+}
+
+.ingredient-delete > a{
+    color: white;
+}
+
+:hover.ingredient-delete > a{
+    color: rgb(196, 196, 196);
+}
+
+.ingredient-delete > a > i{
+    height: 100%;
+}
+
+.ingredient.card-body{
+    padding-left: 10px;
+    padding-bottom: 0px;
+    background-color: rgb(70, 184, 80);
+    color: white;
+    font-weight: bold;
+}
+
+.ingredient.card-body>.card-text{
+    display:flex;
+    flex-direction: row;
+}
+
+.ingredient.card-body>.card-text>p{
+    padding-right: 10px;
+}
