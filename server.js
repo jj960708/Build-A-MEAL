@@ -41,6 +41,7 @@ app.use("/api/users", require("./routes/users"));
 app.use("/api/auth", require("./routes/auth"));
 app.use('/ingredients', require("./routes/ingredients"));
 app.use('/api/inventory', require("./routes/inventory"));
+app.use('/api/recipe', require("./routes/recipe"));
 
 app.listen(port, () => {
   //console.log(`Server is running on port: ${port}`);
