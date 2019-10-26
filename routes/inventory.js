@@ -20,6 +20,7 @@ const get_inventory_ingredients = async function(inventoryList){
         }
         var measure_word = ingredient["ingredientQuantityMeasureValue"];
         inventoryIngredient = {
+            "_id": inventoryList[i],
             "IngredientName": inventoryIngredient["IngredientName"],
             "inventoryIngredientAdded": inventoryIngredient["inventoryIngredientAdded"],
             "inventoryIngredientExpiration": inventoryIngredient["inventoryIngredientExpiration"],
@@ -40,7 +41,6 @@ router.get("/me", auth, async (req, res) => {
     
     try{
         const inventory = await Inventory.findOne({user:req.user.id}).populate('user','name');
-        console.log(inventory);
         if (!inventory){
             return res.status(404).json({msg:'There is no inventory for this user'})
         }
@@ -49,18 +49,25 @@ router.get("/me", auth, async (req, res) => {
 
     }catch(err){
         console.error(err.message);
-        res.status(500).send("Server Error");
+        return res.status(500).send("Server Error");
 
     }
 
 });
 
-router.delete('/:id',auth, async(req, res) => {
-    const inventory = await Inventory.findOne({user:req.user.id}).populate('user','name');
-    
-    inventory.findByIdAndDelete(req.params.id)
-      .then(() => res.json('Inventory item deleted.'))
-      .catch(err => res.status(400).json('Error: ' + err));
+router.delete('/:id', auth, async(req, res) => {
+    var inventory = await Inventory.findOne({user:req.user.id})
+    inventory.IngredientName.remove(req.params.id);
+    inventory.save(function (err, event){
+        if(err){
+            res.status(400).json('Error: ' + err);
+         }else{
+            res.json('Ingredient item deleted.');
+         }  
+    });
+    InventoryIngredient.findByIdAndDelete(req.params.id)
+    .then(() => res.json('Inventory item deleted.'))
+    .catch(err => res.status(400).json('Error: ' + err));
 });
 
 router.post('/update/:id', auth, async(req, res) => {
