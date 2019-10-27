@@ -91,10 +91,12 @@ export default class InventoryList extends Component {
           <div className = "row">
               { this.inventoryList() }
           </div>
+
           <div>
-            <i className="fa fa-plus" aria_hidden="true" onClick={this.triggerAddItemState}></i>
-            {this.state.isAddItemState && <AddInventoryItem />}
+            <i className="fa fa-plus" aria_hidden="true" data-toggle="modal" data-target="#exampleModal"></i>
+              <AddInventoryItem />
           </div>
+
         </div>
       </div>
         )

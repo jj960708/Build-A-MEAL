@@ -58,12 +58,10 @@ router.get("/me", auth, async (req, res) => {
 router.delete('/:id', auth, async(req, res) => {
     var inventory = await Inventory.findOne({user:req.user.id})
     inventory.IngredientName.remove(req.params.id);
-    inventory.save(function (err, event){
+    await inventory.save(function (err, event){
         if(err){
             res.status(400).json('Error: ' + err);
-         }else{
-            res.json('Ingredient item deleted.');
-         }  
+         } 
     });
     InventoryIngredient.findByIdAndDelete(req.params.id)
     .then(() => res.json('Inventory item deleted.'))
