@@ -4,21 +4,20 @@ import axios from 'axios';
 
 const RecipeItem = props => (
     <div className="card" style={{width: 18 + 'rem'}}>
-      <img className="card-img-top" src={props.item.recipeImage} alt={props.item.recipeName}/>
+      <img src={props.item.image} alt={props.item.title}/>
       <div className="card-body">
-        <h5 className="card-title">{props.item.recipeName}</h5>
-        <div className="card-text">
+        <h5 className="card-title">{props.item.title}</h5>
+        
           <p>
-            {props.item.recipePrepTime}
+            {props.item.readyInMinutes}
           </p>
-        </div>
       </div>
     </div>
 
   )
 
 
-export default class RecipeList extends Component {
+export default class recipeList extends Component {
     constructor(props) {
         super(props);
 
@@ -27,16 +26,16 @@ export default class RecipeList extends Component {
     }
 
     componentDidMount(){
-        let config = {
-          withCredentials: true
-        }
-        axios.get('http://localhost:5000/api/recipe/me', config)
+        
+        axios.get('http://localhost:5000/api/recipe/test')
             .then(response => {
                 if(response.data.length > 0){
                   this.setState({
                     recipe: response.data
                   })
+                  console.log(response.data);
                 }
+                return;
 
               }).catch(error => {
                 console.log(error);
@@ -44,18 +43,19 @@ export default class RecipeList extends Component {
     }
 
     recipeList() {
-        return this.state.inventory.map(item => {
-          return (
-          <div className = "col-4-md">
-          </div>
-          );
-        })
+      return this.state.recipe.map(item => {
+        return (
+        <div className = "col-4-md">
+          <RecipeItem item={item}  key={item.id} />
+        </div>
+        );
+      })
     }
 
     render (){
         return(
         <div>
-        <h3>Logged Item</h3>
+        <h3>Recipes</h3>
         <div className="container">
           <div className = "row">
               { this.recipeList() }

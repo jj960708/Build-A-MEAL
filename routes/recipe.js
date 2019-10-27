@@ -20,9 +20,9 @@ router.get("/test", async (req, res) => {
     
     try{
         
-        const ingredient = req.query.ingredients;
-        console.log(ingredient);
-        const resipe = await axios.get('https://api.spoonacular.com/recipes/findByIngredients', {
+        const ingredient = ["apples"].join(",");
+        
+        const recipe = await axios.get('https://api.spoonacular.com/recipes/findByIngredients', {
             params: {
             ingredients: ingredient,
             number: '15',
@@ -30,7 +30,7 @@ router.get("/test", async (req, res) => {
             }
         });
 
-        return console.log(resipe.data);
+        return res.json(recipe.data);
         
 
 
