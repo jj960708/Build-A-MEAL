@@ -72,3 +72,7 @@
   .suggestions li:not(:last-of-type) {
     border-bottom: 1px solid #999;
   }
+
+  img{
+    height: 250px;
+  }
