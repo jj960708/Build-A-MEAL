@@ -51,6 +51,18 @@ export default class EditInventoryItem extends Component{
           .catch(function (error) {
             console.log(error);
           })
+        axios.get('http://localhost:5000/api/inventory/ingredientsList', config)
+          .then(response => {
+              console.log("response ==", response);
+              if(response.data.ingredientsList.length > 0){
+              this.setState({
+                  ingredientList: response.data.ingredientsList
+                });
+              }
+  
+            }).catch(error => {
+              console.log(error);
+          });
     }
 
     onSubmit(e){  
@@ -67,7 +79,7 @@ export default class EditInventoryItem extends Component{
         };
         axios.post('http://localhost:5000/api/inventory/update/' + this.props.id, inventoryItem, {headers: headers}).then(res => console.log(res.data));
         this.toggle();
-        //window.location = "/inventory";
+        window.location = "/inventory";
     }
 
     onChangeUnit(unit){

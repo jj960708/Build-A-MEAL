@@ -6,6 +6,26 @@ let IngredientIndex = require('../models/ingredientIndex.model');
 let Ingredient = require('../models/ingredient.model');
 
 
+router.route('/ingredientsEdit').post(async (req, res) => {
+    Ingredient.find({}, async (err, ingredients)=>{
+        ingredients.forEach(ingredient => {
+            let ingredient_temp = ingredient;
+            var IngredImage = ingredient_temp.ingredientImage.replace("100", "500").replace("100", "500");
+            //console.log("new image ==",IngredImage);
+            ingredient.overwrite({
+                ingredientName: ingredient.ingredientName,
+                ingredientType: ingredient.ingredientType,
+                ingredientImage: IngredImage,
+                ingredientQuantityMeasureValue: ingredient.ingredientQuantityMeasureValue
+            });
+            ingredient.save().then(() => {
+                console.log(ingredient);
+            });
+            
+        })
+    })
+});
+
 router.route('/').get((req, res) => {
     const file = "./assets/top-1k-ingredients.csv";
     var current_index;

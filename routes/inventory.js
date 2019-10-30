@@ -98,6 +98,15 @@ router.post('/update/:id', auth, async(req, res) => {
       .catch(err => res.status(400).json('Error: ' + err));
 });
 
+router.get('/ingredientslist', (req,res)=>{
+    Ingredient.find({}, (err, ingredients)=>{
+        let ingredientsList = ingredients.map(ingredient => {
+            return ingredient.ingredientName
+        });
+        return res.json({ ingredientsList: ingredientsList });
+    })
+})
+
 router.post('/',auth,async(req,res) =>{ 
     const errors = validationResult(req);
     if (!errors.isEmpty()){
