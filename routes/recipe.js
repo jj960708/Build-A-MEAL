@@ -16,11 +16,20 @@ axios.get(req_str, {
     }
 });*/
 
-router.get("/test", async (req, res) => {
+const get_ingredient_names = function(ingredientsList){
+    const ingredientNames = ingredientsList.map(ingredient => {
+        return ingredient.IngredientName;
+    });
+    return ingredientNames;
+}
+
+router.post("/", async (req, res) => {
     
     try{
-        
-        const ingredient = ["apples"].join(",");
+        console.log(req.body.ingredientsList);
+        var ingredientsListBulk = req.body.ingredientsList;
+        var ingredientsList = get_ingredient_names(ingredientsListBulk);
+        const ingredient = ingredientsList.join(",");
         
         const recipe = await axios.get('https://api.spoonacular.com/recipes/findByIngredients', {
             params: {

@@ -22,24 +22,42 @@ export default class recipeList extends Component {
         super(props);
 
         //this.deleteInventoryItem = this.deleteInventoryItem.bind(this);
-        this.state = {recipe: []}
+        this.state = {
+          ingredients: [],
+          recipe: []
+        }
     }
 
     componentDidMount(){
-        
-        axios.get('http://localhost:5000/api/recipe/test')
-            .then(response => {
-                if(response.data.length > 0){
-                  this.setState({
-                    recipe: response.data
-                  })
-                  console.log(response.data);
-                }
-                return;
+      let config = {
+        withCredentials: true
+      }
+      axios.get('http://localhost:5000/api/inventory/me', config)
+          .then(response => {
+              if(response.data.length > 0){
+                this.setState({
+                  ingredients: response.data
+                }, () => {
+                  console.log("ingredients", this.state.ingredients);
+                  axios.post('http://localhost:5000/api/recipe/', {ingredientsList: this.state.ingredients})
+                  .then(response => {
+                      if(response.data.length > 0){
+                        this.setState({
+                          recipe: response.data
+                        })
+                        console.log(response.data);
+                      }
+                      return;
 
-              }).catch(error => {
-                console.log(error);
-            });
+                    }).catch(error => {
+                      console.log(error);
+                  });
+                });
+              }
+
+            }).catch(error => {
+              console.log(error);
+          });
     }
 
     recipeList() {
