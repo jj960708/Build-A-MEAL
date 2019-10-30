@@ -7,11 +7,11 @@ import Cookies from 'js-cookie';
 import "react-datepicker/dist/react-datepicker.css";
 import Autocomplete from './autocomplete.component';
 
-export default class AddInventoryItem extends Component{
+export default class EditInventoryItem extends Component{
     constructor(props) {
         super(props);
 
-        this.toggle  = this.toggle.bind(this);
+        this.toggle  = this.props.toggle.bind(this);
         this.onChangeIngredient = this.onChangeIngredient.bind(this);
         this.onChangeUnit = this.onChangeUnit.bind(this);
         this.onChangeAddDate = this.onChangeAddDate.bind(this);
@@ -20,20 +20,40 @@ export default class AddInventoryItem extends Component{
         this.onSubmit = this.onSubmit.bind(this);
         this.state = {
             token: Cookies.get('token'),
-            modal: false,
-            name: new String(),
-            addDate: new Date(),
-            expires: new Date(),
-            quantity: new Number(),
+            modal: true,
+            name: "",
+            addDate: null,
+            expires: null,
+            quantity: null,
             ingredientList: ['egg whites', 'watermelon chunks'],
             unitList: ['g', 'kg', 'lbs', 'oz', 'cups', 'ml', 'l', 'tsps', 'tbsps', 'qt', 'bunch', 'rip', 'scoops', 'leaves', 'drops', 'sheets', 'slices', 'inches', 'stalks', 'sticks', 
             'strips', 'sprigs', 'dashes', 'pinches'],
-            unit: new String()
+            unit: null
         }
     }    
 
-    onSubmit(e){
-        
+    componentDidMount() {
+        let config = {
+            withCredentials: true
+        }
+        axios.get('http://localhost:5000/api/inventory/inventoryIngredient/'+ this.props.id, config)
+          .then(response => {
+            this.setState({
+              name: response.data.IngredientName,
+              addDate: new Date(response.data.inventoryIngredientAdded),
+              expires: new Date(response.data.inventoryIngredientExpiration),
+              quantity: response.data.inventoryIngredientQuantity 
+            },() => {
+                console.log("added the inventory stuff!");
+            });   
+            
+          })
+          .catch(function (error) {
+            console.log(error);
+          })
+    }
+
+    onSubmit(e){  
         const inventoryItem = {
             name: this.state.name,
             from: this.state.addDate,
@@ -45,9 +65,9 @@ export default class AddInventoryItem extends Component{
         let headers = {
             'x-access-token': this.state.token 
         };
-        axios.post('http://localhost:5000/api/inventory/ingredients', inventoryItem, {headers: headers}).then(res => console.log(res.data));
+        axios.post('http://localhost:5000/api/inventory/update/' + this.props.id, inventoryItem, {headers: headers}).then(res => console.log(res.data));
         this.toggle();
-        window.location = "/inventory";
+        //window.location = "/inventory";
     }
 
     onChangeUnit(unit){
@@ -82,22 +102,12 @@ export default class AddInventoryItem extends Component{
         });
     }
 
-    toggle() {
-        this.setState({
-          modal: !this.state.modal
-        });
-    }
     
     render(){
         return(
-            <div>
-            <Button variant="primary" onClick={this.toggle}>
-              Add Food Item
-            </Button>
-      
             <Modal show={this.state.modal} onHide={this.toggle} animation={false}>
               <Modal.Header closeButton>
-                <Modal.Title>Add Food Item</Modal.Title>
+                <Modal.Title>Edit Food Item</Modal.Title>
               </Modal.Header>
               <Modal.Body>
               <Form>
@@ -105,8 +115,10 @@ export default class AddInventoryItem extends Component{
                         <Form.Label>Ingredient Name</Form.Label>
                             <Autocomplete
                                 className ="form-control"
+                                selected={this.state.name}
                                 suggestions={this.state.ingredientList} 
                                 onChange={this.onChangeIngredient}
+                                fetchSelected ={this.getName}
                             />
                     </Form.Group>
                     <Form.Group>
@@ -152,7 +164,6 @@ export default class AddInventoryItem extends Component{
                 </Button>
               </Modal.Footer>
             </Modal>
-          </div>
         )
     }
 }

@@ -12,7 +12,7 @@ class Autocomplete extends Component {
 
   constructor(props) {
     super(props);
-
+    
     this.state = {
       // The active selection's index
       activeSuggestion: 0,
@@ -24,7 +24,24 @@ class Autocomplete extends Component {
       userInput: ""
     };
   }
+  componentDidUpdate(prevProps) {
+    if (prevProps.selected !== this.props.selected) {
+      this.setState({
+        userInput: this.props.selected 
+      });
+    } 
+  }
 
+
+  componentDidMount() {
+    console.log(this.props);
+    if(this.props.selected != ""){
+      console.log("selected was not null!");
+      this.setState({
+        userInput: this.props.selected
+      });
+    }
+  }
   // Event fired when the input value is changed
   onChange = e => {
     const { suggestions } = this.props;

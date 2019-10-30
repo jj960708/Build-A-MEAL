@@ -3,10 +3,10 @@ import axios from 'axios';
 import Cookies from 'js-cookie';
 import './stylesheets/inventory.css';
 import AddInventoryItem from './addInventory.component.js';
+import EditInventoryItem from './editInventory.component.js';
 
-
-const InventoryItem = props => (
-    <div className="card" style={{width: 18 + 'rem'}}>
+const InventoryItem = props => ( 
+    <div className="card" style={{width: 18 + 'rem'}} onClick={(e) => props.editInventoryItem(e, props.item._id)} >
       <img className="card-img-top" src={props.item.ingredientImage} alt={props.item.IngredientName}/>
       <h5 className="card-title ingredient-name">{props.item.IngredientName} <span className="ingredient-delete"><a href="#" onClick={() => { props.deleteInventoryItem(props.item._id) }}><i className="fas fa-window-close"></i></a></span></h5>
       <div className="ingredient card-body">
@@ -20,7 +20,6 @@ const InventoryItem = props => (
         </div>
       </div>
     </div>
-
   )
 
 
@@ -29,11 +28,15 @@ export default class InventoryList extends Component {
         super(props);
 
         this.deleteInventoryItem = this.deleteInventoryItem.bind(this);
+        this.editInventoryItem = this.editInventoryItem.bind(this);
+        this.toggleEdit = this.toggleEdit.bind(this);
         this.state = {
           inventory: [],
           token: Cookies.get('token'),
           isEmptyState: true,
-          isAddItemState: false
+          isAddItemState: false,
+          isEditItemState: false,
+          editKey: null
         }
     }
 
@@ -61,15 +64,30 @@ export default class InventoryList extends Component {
       };
       axios.delete('http://localhost:5000/api/inventory/' + id, {headers: headers, data:null}).then(res => console.log(res.data));
         this.setState({
-            inventory: this.state.inventory.filter(el => el._id !== id)
+          inventory: this.state.inventory.filter(el => el._id !== id)
         })
+    }
+
+    editInventoryItem(e, id){
+      this.setState({
+        editKey: id,
+      }, () => {
+        console.log("editKey ==", this.state.editKey);
+        this.toggleEdit();
+      });
+    }
+
+    toggleEdit() {
+      this.setState({
+        isEditItemState: !this.state.isEditItemState
+      });
     }
 
     inventoryList() {
         return this.state.inventory.map(item => {
           return (
           <div className = "col-4-md">
-            <InventoryItem item={item} deleteInventoryItem={this.deleteInventoryItem} key={item._id}/>
+            <InventoryItem item={item} editInventoryItem = {this.editInventoryItem} deleteInventoryItem={this.deleteInventoryItem} key={item._id}/>
           </div>
           );
         })
@@ -86,17 +104,16 @@ export default class InventoryList extends Component {
     render (){
         return(
         <div>
-        <h3>Logged Item</h3>
+        <h3>Inventory</h3>
         <div className="container">
           <div className = "row">
               { this.inventoryList() }
           </div>
 
           <div>
-            <i className="fa fa-plus" aria_hidden="true" data-toggle="modal" data-target="#exampleModal"></i>
-              <AddInventoryItem />
+            <AddInventoryItem />
           </div>
-
+          {this.state.isEditItemState && <EditInventoryItem toggle={this.toggleEdit} id={this.state.editKey}/>}
         </div>
       </div>
         )

@@ -44,11 +44,13 @@ export default class Login extends Component{
     console.log(login_info);
 
     axios.post('/api/auth', login_info)
-        .then(res => console.log(res.data)).catch(err =>{
+        .then(res => {
+          console.log(res.data)
+          window.location = "/inventory";
+        }).catch(err =>{
           console.log(err);
-        });
-
-    //window.location = "/";
+    });
+  
   }
   render(){
     return(

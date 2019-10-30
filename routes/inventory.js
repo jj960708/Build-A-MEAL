@@ -55,6 +55,20 @@ router.get("/me", auth, async (req, res) => {
 
 });
 
+router.get("/inventoryIngredient/:id", auth, async(req, res)=>{
+    try{
+        const inventoryIngredient = await InventoryIngredient.findById(req.params.id)
+        if(!inventoryIngredient){
+            return res.status(404).json({msg: 'Inventory ingredient does not exist'})
+        }
+        return res.json(inventoryIngredient);
+    }catch(err){
+        console.error(err.message);
+        return res.status(500).send("Server Error");
+
+    }
+});
+
 router.delete('/:id', auth, async(req, res) => {
     var inventory = await Inventory.findOne({user:req.user.id})
     inventory.IngredientName.remove(req.params.id);
@@ -69,9 +83,8 @@ router.delete('/:id', auth, async(req, res) => {
 });
 
 router.post('/update/:id', auth, async(req, res) => {
-    const inventory = await Inventory.findOne({user:req.user.id}).populate('user','name');
 
-    inventory.findById(req.params.id)
+    InventoryIngredient.findById(req.params.id)
       .then(inventoryitem => {
         inventoryitem.IngredientName = req.body.name;
         inventoryitem.inventoryIngredientAdded = req.body.from;
