@@ -1,0 +1,185 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>Build-A-Meal</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+
+    <style type="text/css">
+      * {
+        box-sizing: border-box;
+        margin: 0;
+      }
+      body {
+        font-family: Arial, Helvetica, sans-serif;
+        color: 000000;
+        width: 100%;
+      }
+      h1 {
+        text-align: center;
+        /*margin: 0.5em 1em 1em 1em;*/
+        padding: 4em 0 1em 0;
+        font-variant: small-caps;
+      }
+      h2 {
+        text-align: center;
+        width: 300px;
+        margin: 1em 1em 0 1em;
+        padding: 0;
+        font-size: 1.2em;
+      }
+      a{
+        padding: 0 2em 0 2em;
+        font-size: 1em;
+        word-wrap: normal;
+      }
+      p{
+        float: left;
+        clear: all;
+        /*margin: 1em 1em 1em 1em;*/
+        padding: 0;
+        font-size: 1em;
+      }
+      #Navbar {
+        background-color: #666666;
+        position: fixed;
+        top: 0;
+        left: 0;
+        padding: 1em 0 1em 0;
+        border-bottom: 2px solid #333;
+        opacity: 0.8;
+        width: 100%;
+      }
+      #Navbar a {
+        float: right;
+        margin: 1em 2em 0em 2em;
+        padding: 0;
+        color: #000000;
+      }
+      #Navbar img {
+        float: top;
+        float: left;
+        height: 4em;
+      }
+
+      #Splash {
+        /*padding: 4px 0  4px 0;*/
+        /*margin: 0 1em 1em 1em;*/
+        white-space: nowrap;
+        /*background-color: #ffffff;*/
+      }
+      #Splash h1 {
+        /*display: inline;*/
+        text-align: center;
+        white-space: nowrap;
+        /*margin: 0 1em 0.5em 0;*/
+      }
+
+      #Info {
+        padding-top: 45em;
+        padding-bottom: 25em;
+        padding-left: 2em;
+        padding-right: 2em;
+      }
+
+      #Info img{
+        float: left;
+        left: 0;
+        width: 60%;
+      }
+
+      #Info h2{
+        /*padding: 4px 0  4px 0;*/
+        /*margin: 0 1em 1em 1em;*/
+        float: right;
+        right: 0;
+        text-align: center;
+        white-space: normal;
+        width: 30%;
+        /*background-color: #ffffff;*/
+      }
+
+      #Info p{
+        /*padding: 4px 0  4px 0;*/
+        /*margin: 0 1em 1em 1em;*/
+        margin-top: 1em;
+        float: right;
+        right: 0;
+        text-align: justify;
+        white-space: normal;
+        width: 30%;
+        /*background-color: #ffffff;*/
+      }
+
+      #Info a{
+        /*padding: 4px 0  4px 0;*/
+        /*margin: 0 1em 1em 1em;*/
+        float: right;
+        right: 0;
+        text-align: center;
+        white-space: normal;
+        width: 30%;
+        /*background-color: #ffffff;*/
+      }
+
+    </style>
+  </head>
+
+  <body style="background-color:#ffc39b">
+    <div id="Body" style="position: relative; z-index: 1;">
+      <img src="sunny.jpg" alt="A stock photo of sunshine." style="position: absolute; z-index: 1; width: 100%">
+      <div><span style="position: absolute; z-index: 2;">
+
+
+        <!--<nav class="navbar navbar-default">
+          <div class="container-fluid">
+            <div class="navbar-header">
+              <a class="navbar-brand" href="#">WebSiteName</a>
+            </div>
+            <ul class="nav navbar-nav">
+              <li class="active"><a href="#">Home</a></li>
+              <li><a href="#">Page 1</a></li>
+              <li><a href="#">Page 2</a></li>
+              <li><a href="#">Page 3</a></li>
+            </ul>
+          </div>
+        </nav>-->
+
+        <div id="Navbar">
+          <nav class="navbar navbar-light"><span style="z-index: 3;">
+            <img src="BAM_logo.png" alt="BAM logo">
+            <strong>
+              <a class=navbar-text href="Register.html">Register</a>
+              <a class=navbar-text href="Login.html">Login</a>
+              <a class=navbar-text href="Support.html">Support</a>
+              <a class=navbar-text href="Inventory.html">Inventory</a>
+              <a class=navbar-text href="Recipes.html">Recipes</a>
+            </strong></span>
+          </nav>
+        </div>
+
+        <div id="Splash">
+          <h1>Build-A-Meal</h1>
+          <h2>Find recipes faster, smarter, and easier.</h2>
+          <a class=navbar-text href="Register.html" style="color: #000000;">Start Now</a>
+        </div>
+
+        <!-- Search Bar -->
+      </span></div>
+
+      <div id="Info">
+        <img src="sunny.jpg" alt="The same stock photo of sunshine.">
+        <h2>What is Build-A-Meal?</h2>
+        <p>Responsive web design is about creating web sites which automatically adjust themselves to look good on all devices, from small phones to large desktops.</p>
+        <a class=navbar-text href="Register.html" style="color: #000000;">Get Started Now</a>
+      </div>
+
+
+    </div>
+  </body>
+</html>
