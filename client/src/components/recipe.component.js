@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 
-const id = 716429;
+
 
 const RecipeItem = props => (
     <div className="card" style={{width: 18 + 'rem'}}>
@@ -19,7 +19,7 @@ const RecipeItem = props => (
   )
 
 
-export default class recipeList extends Component {
+export default class GetRecipeItem extends Component {
     constructor(props) {
         super(props);
 
@@ -29,10 +29,10 @@ export default class recipeList extends Component {
     }
     
     componentDidMount(){
-  
-        axios.get(`http://localhost:5000/api/recipe/find/${id}`)
+        console.log(this.props.id);
+        axios.get(`http://localhost:5000/api/recipe/find/${this.props.id}`)
             .then(response => {
-                
+                console.log('hello')
                 if(response.data){
                 
                   this.setState({
