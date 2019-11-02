@@ -51,6 +51,32 @@ router.post("/", async (req, res) => {
 
 });
 
+router.get("/find/:id", async (req, res) => {
+    
+    try{
+        
+        const recipe_id = req.params.id;
+        
+        
+        const recipe = await axios.get('https://api.spoonacular.com/recipes/'+recipe_id.toString()+'/information', {
+            params: {
+            apiKey: '405f503cf4394f1d953215f491b99658', 
+            }
+        });
+
+        return res.json(recipe.data);
+        
+
+
+    }catch(err){
+        console.error(err.message);
+        res.status(500).send("Server Error");
+
+    }
+
+});
+
+
 
 module.exports = router;
 

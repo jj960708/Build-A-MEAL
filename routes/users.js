@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const { check, validationResult } = require("express-validator");
 const User = require("../models/Users");
+const Inventory = require("../models/inventory");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
@@ -36,14 +37,22 @@ router.post(
         email,
         password
       });
+      
       const salt = await bcrypt.genSalt(10);
       user.password = await bcrypt.hash(password, salt);
-      user.save();
+      await user.save();
+      let current = await User.findOne({ email });
+      console.log(current.id);
+      const inventoryField = {};
+      inventoryField.user = current.id;
+      inventory = new Inventory(inventoryField);
+      await inventory.save();
       const payload = {
         user: {
           id: user.id
         }
       };
+
       jwt.sign(payload, jwtSecret, { expiresIn: 360000 }, (err, token) => {
         if (err) throw err;
         return res.cookie('token', token, { httpOnly: false }).sendStatus(200);

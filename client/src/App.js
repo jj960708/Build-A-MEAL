@@ -10,6 +10,7 @@ import Register from "./components/register.component";
 import Inventory from "./components/inventory.component";
 import withAuth from './components/withAuth';
 import Recipe from './components/recipes.component.js';
+import GetRecipe from './components/recipe.component.js';
 // import EditExercise from "./components/edit-exercise.component";
 // import CreateExercise from "./components/create-exercise.component"; 
 // import CreateUser from "./components/create-user.component";
@@ -24,8 +25,9 @@ function App() {
         <Route path="/login" component= {Login} />
         <Route path="/signup" component= {Signup} />
         <Route path="/register" component= {Register} />
-        <Route path="/recipe" component= {Recipe} />
+        <Route path="/recipe" component= {withAuth(Recipe)} />
         <Route path="/inventory" component={withAuth(Inventory)} />
+        <Route path="/GetRecipe" component={withAuth(GetRecipe)} />
         <div className="container">
         </div>
       </div>
