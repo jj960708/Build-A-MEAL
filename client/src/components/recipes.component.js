@@ -4,7 +4,7 @@ import axios from 'axios';
 import GetRecipeItem from './recipe.component.js';
 
 const RecipeItem = props => (
-    <div className="card" style={{width: 18 + 'rem'}} onClick={(e) => props.getRecipeItem(e, props.item.id)} >
+    <div className="card" style={{width: 18 + 'rem'}}  >
       <img src={props.item.image} alt={props.item.title}/>
       <div className="card-body">
         <h5 className="card-title">{props.item.title}</h5>
@@ -13,7 +13,11 @@ const RecipeItem = props => (
             {props.item.readyInMinutes}
           </p>
       </div>
+      
+      <Link to={"/GetRecipe/"+props.item.id}>View Recipe</Link> 
+
     </div>
+    
 
   )
 
@@ -95,7 +99,7 @@ export default class recipeList extends Component {
     render (){
         return(
         <div>
-        {this.state.display && <GetRecipeItem toggle={this.toggleEdit} id={this.state.recipeID}/>}
+  
         <h3>Recipes</h3>
         <div className="container">
           <div className = "row">

@@ -27,7 +27,7 @@ function App() {
         <Route path="/register" component= {Register} />
         <Route path="/recipe" component= {withAuth(Recipe)} />
         <Route path="/inventory" component={withAuth(Inventory)} />
-        <Route path="/GetRecipe" component={withAuth(GetRecipe)} />
+        <Route path="/GetRecipe/:id" component={withAuth(GetRecipe)} />
         <div className="container">
         </div>
       </div>

@@ -35,7 +35,7 @@ router.post("/", async (req, res) => {
             params: {
             ingredients: ingredient,
             number: '15',
-            apiKey: '405f503cf4394f1d953215f491b99658', 
+            apiKey: '76a4d6fd5fe747da9a6cc645228c9e53', 
             }
         });
 
@@ -58,9 +58,9 @@ router.get("/find/:id", async (req, res) => {
         const recipe_id = req.params.id;
         
         
-        const recipe = await axios.get('https://api.spoonacular.com/recipes/'+recipe_id.toString()+'/information', {
+        const recipe = await axios.get('https://api.spoonacular.com/recipes/'+recipe_id.toString()+'/analyzedInstructions', {
             params: {
-            apiKey: '405f503cf4394f1d953215f491b99658', 
+            apiKey: '76a4d6fd5fe747da9a6cc645228c9e53', 
             }
         });
 

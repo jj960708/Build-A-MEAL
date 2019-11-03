@@ -6,12 +6,11 @@ import axios from 'axios';
 
 const RecipeItem = props => (
     <div className="card" style={{width: 18 + 'rem'}}>
-      <img className="card-img-top" src={props.item.image} alt={props.item.title}/>
       <div className="card-body">
-        <h5 className="card-title">{props.item.title}</h5>
+        <h5 className="card-title">Step number {props.item.number}</h5>
         
           <p>
-            {props.item.readyInMinutes}
+            {props.item.step}
           </p>
       </div>
     </div>
@@ -29,14 +28,14 @@ export default class GetRecipeItem extends Component {
     }
     
     componentDidMount(){
-        console.log(this.props.id);
-        axios.get(`http://localhost:5000/api/recipe/find/${this.props.id}`)
+        console.log(this.props.match.params.id);
+        axios.get(`http://localhost:5000/api/recipe/find/${this.props.match.params.id}`)
             .then(response => {
                 console.log('hello')
                 if(response.data){
                 
                   this.setState({
-                    recipe: response.data
+                    recipe: response.data[0].steps
                   })
                   
                 }
@@ -48,18 +47,19 @@ export default class GetRecipeItem extends Component {
     }
 
     recipeList() {
-        return (
-        <div className = "col-4-md">
-          <RecipeItem item={this.state.recipe}  key={this.state.recipe.id} />
-        </div>
-        );
-      
-    }
+        return this.state.recipe.map(item => {
+            return (
+            <div className = "col-4-md">
+              <RecipeItem item={item}  key={item.id} />
+            </div>
+            );
+          })
+        }
 
     render (){
         return(
         <div>
-        <h3>Recipes</h3>
+        <h3>Recipes Instrcution</h3>
         <div className="container">
           <div className = "row">
               { this.recipeList() }
