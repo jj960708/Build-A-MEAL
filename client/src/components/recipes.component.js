@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import GetRecipeItem from './recipe.component.js';
+import { isThisMonth } from 'date-fns/esm';
 
 const RecipeItem = props => (
     <div className="card" style={{width: 18 + 'rem'}}  >
@@ -76,7 +77,14 @@ export default class recipeList extends Component {
         this.toggleEdit();
       });
         
-     
+    }
+
+    giveRecipeHeader(id){
+      for(var i = 0; i < this.state.recipe.length; i++){
+        if(this.state.recipe[i].id == id){
+          return(JSON.stringify(this.state.recipe[i]));
+        }
+      }
     }
 
     recipeList() {

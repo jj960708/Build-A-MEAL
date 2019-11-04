@@ -5,14 +5,15 @@ import axios from 'axios';
 
 
 const RecipeItem = props => (
-    <div className="card" style={{width: 18 + 'rem'}}>
+    <div className="row">
+    <div className="card" style={{width: 100 + '%', height: 10 + "rem"}}>
       <div className="card-body">
-        <h5 className="card-title">Step number {props.item.number}</h5>
-        
+        {props.item.number != -1 && <h5 className="card-title">Step number {props.item.number}</h5>}
           <p>
             {props.item.step}
           </p>
       </div>
+    </div>
     </div>
 
   )
@@ -33,15 +34,21 @@ export default class GetRecipeItem extends Component {
             .then(response => {
                 console.log('hello')
                 if(response.data){
-                
+                  console.log(response);
                   this.setState({
                     recipe: response.data[0].steps
                   })
-                  
+
                 }
                     return console.log(response.data);
 
               }).catch(error => {
+                this.setState({
+                  recipe: [{
+                    number:-1,
+                    step:"RECIPE INSTUCTIONS NOT FOUND"
+                  }] 
+                });
                 console.log(error);
             });
     }
@@ -59,9 +66,9 @@ export default class GetRecipeItem extends Component {
     render (){
         return(
         <div>
-        <h3>Recipes Instrcution</h3>
+        <h3>Recipes Instruction</h3>
         <div className="container">
-          <div className = "row">
+          <div className = "">
               { this.recipeList() }
           </div>
         </div>

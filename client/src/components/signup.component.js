@@ -56,7 +56,7 @@ export default class Login extends Component{
           console.log(err);
         });
 
-    //window.location = "/";
+    window.location = "/inventory";
   }
   render(){
     return(

@@ -1,20 +1,8 @@
 const express = require("express");
 const router = express.Router();
-const request = require('request');
 const auth = require("../middleware/auth");
 const axios = require('axios');
 
-var ingredients = ["apples"];
-var ingredList = ingredients.join(",");
-
-/* 
-axios.get(req_str, {
-    params: {
-    ingredients: ingredList,
-    number: '15',
-    apiKey: '76a4d6fd5fe747da9a6cc645228c9e53', 
-    }
-});*/
 
 const get_ingredient_names = function(ingredientsList){
     const ingredientNames = ingredientsList.map(ingredient => {

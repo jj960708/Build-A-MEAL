@@ -29,7 +29,7 @@ const recipeSchema = new Schema({
 	},
 
 	recipeIngredients: {
-		type: Set(Ingredient)
+		type: Set(Ingredient),
 		required: true
 	}
 
