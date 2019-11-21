@@ -26,11 +26,7 @@ export default class Login extends React.Component{
         </div>
       </div>
 
-      <div id="Footer">
-        <a href="https://github.com/jj960708/Build-A-MEAL">GitHub Repository</a>
-        <a href="https://trello.com/b/cZfACP2m/project-schedule-for-team-bam">Trello Workspace</a>
-        <a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ">Contact: kwank2@rpi.edu </a>
-      </div>
+      
 
     </div>
 

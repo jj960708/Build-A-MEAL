@@ -5,21 +5,18 @@ import GetRecipeItem from './recipe.component.js';
 import { isThisMonth } from 'date-fns/esm';
 
 const RecipeItem = props => (
-    <div className="card" style={{width: 18 + 'rem'}}  >
-      <img src={props.item.image} alt={props.item.title}/>
-      <div className="card-body">
-        <h5 className="card-title">{props.item.title}</h5>
-        
-          <p>
-            {props.item.readyInMinutes}
-          </p>
+    <Link to={"/GetRecipe/"+props.item.id}>
+      <div className="card" style={{width: 18 + 'rem'}}  >
+        <img src={props.item.image} alt={props.item.title}/>
+        <div className="card-body">
+          <h5 className="card-title">{props.item.title}</h5>
+          
+            <p>
+              {props.item.readyInMinutes}
+            </p>
+        </div>
       </div>
-      
-      <Link to={"/GetRecipe/"+props.item.id}>View Recipe</Link> 
-
-    </div>
-    
-
+    </Link> 
   )
 
 
