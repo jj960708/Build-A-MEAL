@@ -32,7 +32,7 @@
     padding: 0;
     font-size: 1em;
   }
-  #home  #Navbar {
+  /*#home  #Navbar {
     background-color: #666666;
     position: fixed;
     top: 0;
@@ -52,7 +52,7 @@
     float: top;
     float: left;
     height: 4em;
-  }
+  }*/
 
   #home #Splash {
     /*padding: 4px 0  4px 0;*/
@@ -62,6 +62,7 @@
     background-image: url("../images/sunny.jpg");
     height: 600px;
     width: 100%;
+    background-size: cover;
     background-repeat: no-repeat;
     /*background-color: #ffffff;*/
   }
@@ -69,13 +70,27 @@
     /*display: inline;*/
     text-align: center;
     white-space: nowrap;
+    padding: 2em 0 0 0;
+    font-variant: small-caps;
+    font-size: 5em;
+    font-weight: bold;
+
     /*margin: 0 1em 0.5em 0;*/
+  }
+
+  #home  #Splash h2 {
+    text-align: center;
+    width: 300px;
+    margin: 1em 1em 1em 1em;
+    padding: 0;
+    font-size: 1.2em;
+    font-weight: bold;
   }
 
   #home #Info {
     
-    padding-top: 10em;
-    padding-bottom: 5em;
+    padding-top: 5em;
+    padding-bottom: 7em;
     padding-left: 2em;
     padding-right: 2em;
     background-color: #ffc39b;

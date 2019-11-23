@@ -3,6 +3,7 @@ import {BrowserRouter as Router, Route} from "react-router-dom";
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 import Navbar from "./components/navbar.component";
+import Footer from "./components/footer.component";
 import Home from "./components/home.component";
 import Login from "./components/login.component";
 import Signup from "./components/signup.component";
@@ -19,8 +20,7 @@ function App() {
   return (
     <Router>
       <div className="">  
-        <Navbar />
-        <br />
+        <Navbar /> 
         <Route path="/" exact component= {Home} />
         <Route path="/login" component= {Login} />
         <Route path="/signup" component= {Signup} />
@@ -30,6 +30,7 @@ function App() {
         <Route path="/GetRecipe/:id" component={withAuth(GetRecipe)} />
         <div className="container">
         </div>
+        <Footer />
       </div>
     </Router>
   );
