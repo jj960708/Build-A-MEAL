@@ -42,6 +42,11 @@ const inventoryIngredientSchema = new Schema({
 		required: true,
 	},
 
+	unit: {
+		type: String,
+		
+	}
+
 });
 
 const inventoryIngredient = mongoose.model('inventoryIngredient', inventoryIngredientSchema);

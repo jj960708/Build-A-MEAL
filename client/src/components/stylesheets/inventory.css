@@ -4,8 +4,12 @@
     color: white;
     padding: 5px;
     position: relative;
-    bottom: 250px;
+    /* bottom: 250px; */
     opacity: .8;
+}
+
+.inventoryItem:hover{
+  cursor: pointer;
 }
 
 .ingredient-delete{

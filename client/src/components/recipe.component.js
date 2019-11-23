@@ -32,7 +32,6 @@ export default class GetRecipeItem extends Component {
         console.log(this.props.match.params.id);
         axios.get(`http://localhost:5000/api/recipe/find/${this.props.match.params.id}`)
             .then(response => {
-                console.log('hello')
                 if(response.data){
                   console.log(response);
                   this.setState({

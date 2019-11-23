@@ -28,7 +28,7 @@ export default class EditInventoryItem extends Component{
             ingredientList: ['egg whites', 'watermelon chunks'],
             unitList: ['g', 'kg', 'lbs', 'oz', 'cups', 'ml', 'l', 'tsps', 'tbsps', 'qt', 'bunch', 'rip', 'scoops', 'leaves', 'drops', 'sheets', 'slices', 'inches', 'stalks', 'sticks', 
             'strips', 'sprigs', 'dashes', 'pinches'],
-            unit: null
+            unit: ""
         }
     }    
 
@@ -38,13 +38,13 @@ export default class EditInventoryItem extends Component{
         }
         axios.get('http://localhost:5000/api/inventory/inventoryIngredient/'+ this.props.id, config)
           .then(response => {
+            console.log(response);
             this.setState({
               name: response.data.IngredientName,
               addDate: new Date(response.data.inventoryIngredientAdded),
               expires: new Date(response.data.inventoryIngredientExpiration),
-              quantity: response.data.inventoryIngredientQuantity 
-            },() => {
-                console.log("added the inventory stuff!");
+              quantity: response.data.inventoryIngredientQuantity, 
+              unit: response.data.unit
             });   
             
           })
@@ -53,7 +53,7 @@ export default class EditInventoryItem extends Component{
           })
         axios.get('http://localhost:5000/api/inventory/ingredientsList', config)
           .then(response => {
-              console.log("response ==", response);
+              //console.log("response ==", response);
               if(response.data.ingredientsList.length > 0){
               this.setState({
                   ingredientList: response.data.ingredientsList
@@ -70,16 +70,20 @@ export default class EditInventoryItem extends Component{
             name: this.state.name,
             from: this.state.addDate,
             expires: this.state.expires,
-            quantity: this.state.quantity
+            quantity: this.state.quantity,
+            unit: this.state.unit
         }
-        console.log(inventoryItem);
 
         let headers = {
             'x-access-token': this.state.token 
         };
-        axios.post('http://localhost:5000/api/inventory/update/' + this.props.id, inventoryItem, {headers: headers}).then(res => console.log(res.data));
-        this.toggle();
-        window.location = "/inventory";
+        axios.post('http://localhost:5000/api/inventory/update/' + this.props.id, inventoryItem, {headers: headers}).then(
+          res => {
+            console.log(res.data);
+            this.toggle();
+            window.location = "/inventory";
+          });
+
     }
 
     onChangeUnit(unit){
@@ -158,6 +162,7 @@ export default class EditInventoryItem extends Component{
                     <Form.Group>
                     <Form.Label>Unit</Form.Label>
                     <Autocomplete
+                        selected={this.state.unit}
                         className ="form-control"
                         suggestions={this.state.unitList}
                         onChange={this.onChangeUnit} 

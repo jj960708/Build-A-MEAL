@@ -7,7 +7,7 @@ module.exports = function(req, res, next) {
   req.query.token ||
   req.headers['x-access-token'] ||
   req.cookies.token;
-  console.log(req.cookies);
+  //console.log(req.cookies);
   if (!token) {
     console.log("token not found... what u doing!!\n");
     return res.status(401).json({ msg: "No token" });

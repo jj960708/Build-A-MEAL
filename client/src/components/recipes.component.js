@@ -5,23 +5,31 @@ import GetRecipeItem from './recipe.component.js';
 import { isThisMonth } from 'date-fns/esm';
 
 const RecipeItem = props => (
-    <Link to={"/GetRecipe/"+props.item.id}>
-      <div className="card" style={{width: 18 + 'rem'}}  >
-        <img src={props.item.image} alt={props.item.title}/>
-        <div className="card-body">
-          <h5 className="card-title">{props.item.title}</h5>
-          
-            <p>
-              {props.item.readyInMinutes}
-            </p>
-        </div>
+  /*
+    Generates RecipeItem card. Each recipe item card has the recipe name along with the image of the recipe
+    When the recipe is clicked on, the page will redirect to display the recipe instructions.
+  */
+  <Link to={"/GetRecipe/"+props.item.id}>
+    <div className="card" style={{width: 18 + 'rem'}}  >
+      <img src={props.item.image} alt={props.item.title}/>
+      <div className="card-body">
+        <h5 className="card-title">{props.item.title}</h5>
+        
+          <p>
+            {props.item.readyInMinutes}
+          </p>
       </div>
+      
+
+    </div>
     </Link> 
+    
+
   )
 
 
 export default class recipeList extends Component {
-    constructor(props) {
+    constructor(props) {  
         super(props);
         this.getRecipeItem = this.getRecipeItem.bind(this);
         this.toggleEdit = this.toggleEdit.bind(this);
@@ -39,18 +47,19 @@ export default class recipeList extends Component {
       let config = {
         withCredentials: true
       }
-      axios.get('http://localhost:5000/api/inventory/me', config)
+      axios.get('http://localhost:5000/api/inventory/me', config) //grabs the user's inventory to take in the user's ingredients list
           .then(response => {
               if(response.data.length > 0){
                 this.setState({
                   ingredients: response.data
                 }, () => {
-                  console.log("ingredients", this.state.ingredients);
-                  axios.post('http://localhost:5000/api/recipe/', {ingredientsList: this.state.ingredients})
+                  console.log("ingredients", this.state.ingredients); //takes in the ingredients list and places the ingredients list into the body of the post request to recipe
+                  axios.post('http://localhost:5000/api/recipe/', {ingredientsList: this.state.ingredients}) //grabs the top 15 recipes that are associated with the ingredients 
+                                                                                                            //list generated from the previous axios request
                   .then(response => {
                       if(response.data.length > 0){
                         this.setState({
-                          recipe: response.data
+                          recipe: response.data   
                         })
                         console.log(response.data);
                       }
@@ -66,7 +75,7 @@ export default class recipeList extends Component {
               console.log(error);
           });
     }
-    getRecipeItem(e, id){
+    getRecipeItem(e, id){ 
       this.setState({
         recipeID: id,
       }, () => {

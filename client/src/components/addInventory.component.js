@@ -38,16 +38,18 @@ export default class AddInventoryItem extends Component{
             name: this.state.name,
             from: this.state.addDate,
             expires: this.state.expires,
-            quantity: this.state.quantity
+            quantity: this.state.quantity,
+            unit: this.state.unit
         }
         console.log(inventoryItem);
+        //alert(inventoryItem);
 
         let headers = {
             'x-access-token': this.state.token 
         };
         axios.post('http://localhost:5000/api/inventory/ingredients', inventoryItem, {headers: headers}).then(res => console.log(res.data));
         this.toggle();
-        window.location = "/inventory";
+        //window.location = "/inventory";
     }
 
     componentDidMount() {

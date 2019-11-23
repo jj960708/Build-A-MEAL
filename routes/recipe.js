@@ -11,6 +11,19 @@ const get_ingredient_names = function(ingredientsList){
     return ingredientNames;
 }
 
+const sort_by_prep = function(recipes){
+    console.log("not implemented yet");
+}
+
+const filter_by_meal = function(recipes){
+    console.log("not implemented yet");
+}
+
+const determine_valid_recipe = function(recipes){
+    console.log("filter by your inventory")
+}
+
+
 router.post("/", async (req, res) => {
     
     try{
