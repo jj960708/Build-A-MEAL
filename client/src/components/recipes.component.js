@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import axios from 'axios';
 import GetRecipeItem from './recipe.component.js';
 import { isThisMonth } from 'date-fns/esm';
+import {Button, Modal, Form} from 'react-bootstrap';
 
 const RecipeItem = props => (
     <div className="card" style={{width: 18 + 'rem'}}  >
@@ -103,12 +104,44 @@ export default class recipeList extends Component {
       });
     }
 
+    async sortByPreptime(){
+      var tmp = [];
+      var i;
+      
+      for (i in this.state.recipe){
+        await axios.get(`http://localhost:5000/api/recipe/findrecipe/${this.state.recipe[i].id}`)
+        .then(response => {
+          if(response.data){
+            var promise = response.data;
+            tmp.push(promise);
+            
+          }
+          
+
+        }).catch(error => {
+          
+          return console.log(error);
+      });
+      };
+      tmp.sort((a,b)=>a.readyInMinutes - b.readyInMinutes)
+      this.setState({
+        recipe: tmp
+      }
+
+      );
+      return console.log(tmp);
+    }
+
 
     render (){
         return(
         <div>
-  
+         
         <h3>Recipes</h3>
+        <Button variant="primary" onClick={(e)=> this.sortByPreptime()}>
+              Prep Time
+            </Button>
+  
         <div className="container">
           <div className = "row">
               { this.recipeList() }
