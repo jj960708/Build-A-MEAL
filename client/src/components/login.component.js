@@ -18,6 +18,7 @@ export default class Login extends Component{
     this.state = {
         email : '',
         password : '',
+        success : true,
     }
 
   }
@@ -48,6 +49,9 @@ export default class Login extends Component{
           console.log(res.data)
           window.location = "/inventory";
         }).catch(err =>{
+          this.setState({
+            success: false,
+          })
           console.log(err);
     });
   
@@ -55,9 +59,10 @@ export default class Login extends Component{
   render(){
     return(
         <div className="container-fluid d-flex flex-column align-items-center">
-            <div className = "card" style={{width: 30 + 'rem'}}>
+          <div className = "card" style={{width: 30 + 'rem'}}>
             <div className="card-body">
                 <h5 style={m_b_10} className="card-title">Login</h5>
+                {!this.state.success && <p className="text-center" style={{backgroundColor: "#ffc0cb", color : "red", border: "solid", borderWidth: 1}}>Invalid user credentials</p>}
                 <form className="form-group" onSubmit={this.onSubmit}>
                   <input style={m_b_10} className="form-control" type="text" placeholder="Enter Email" name="email" value={this.state.email} onChange={this.onChangeEmail} required/>
                   <input style={m_b_10} className="form-control" type="password" placeholder="Enter Password" name="psw" value={this.state.password} onChange={this.onChangePassword} required/>
@@ -66,10 +71,9 @@ export default class Login extends Component{
                     <input type="checkbox" checked="checked" name="remember"/> Remember me
                   </label>
                 </form>
-            </div>     
             </div>
+          </div>
         </div>  
-        
       );
   }
 }
