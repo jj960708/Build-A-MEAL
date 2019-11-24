@@ -9,31 +9,34 @@ ObjectId = require('mongodb').ObjectID;
 
 const get_inventory_ingredients = async function(inventoryList){
     result = [];
-    console.log("inventoryList", inventoryList);
+    //console.log("inventoryList", inventoryList);
     for(var i = 0; i < inventoryList.length; i++){
         
         var inventoryIngredient = await InventoryIngredient.findOne({_id: new ObjectId(inventoryList[i])});
         var ingredient = await Ingredient.findOne({ingredientName: inventoryIngredient.IngredientName});
         if(!ingredient){
             //console.log("description:", ingredient);
-            console.log("Not a valid ingredient!");
+            //console.log("Not a valid ingredient!");
         }
         var measure_word = ingredient["ingredientQuantityMeasureValue"];
+        var options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+        console.log(inventoryIngredient["inventoryIngredientAdded"].toLocaleDateString("en-US", options));
         inventoryIngredient = {
             "_id": inventoryList[i],
             "IngredientName": inventoryIngredient["IngredientName"],
-            "inventoryIngredientAdded": inventoryIngredient["inventoryIngredientAdded"],
-            "inventoryIngredientExpiration": inventoryIngredient["inventoryIngredientExpiration"],
+            "inventoryIngredientAdded": inventoryIngredient["inventoryIngredientAdded"].toLocaleDateString("en-US", options),
+            "inventoryIngredientExpiration": inventoryIngredient["inventoryIngredientExpiration"].toLocaleDateString("en-US", options),
             "inventoryIngredientQuantity": inventoryIngredient["inventoryIngredientQuantity"],
             "ingredientType": ingredient["ingredientType"],
             "ingredientImage": ingredient["ingredientImage"],
             "measureWord": measure_word,
+            "unit": inventoryIngredient["unit"],
         }
         
         
         result.push(inventoryIngredient);
     }
-    console.log("Result:",result);
+    //console.log("Result:",result);
     return result;
 }
 
@@ -90,10 +93,16 @@ router.post('/update/:id', auth, async(req, res) => {
         inventoryitem.inventoryIngredientAdded = req.body.from;
         inventoryitem.inventoryIngredientExpiration = req.body.expires;
         inventoryitem.inventoryIngredientQuantity = req.body.quantity;
-  
+        inventoryitem.unit = req.body.unit;
+        //console.log(inventoryitem);
         inventoryitem.save()
-          .then(() => res.json('Inventory Item updated!'))
-          .catch(err => res.status(400).json('Error: ' + err));
+          .then(() => {
+              res.json('Inventory Item updated!');
+            })
+          .catch(err => {
+                //console.log("could not update your db", err);
+                res.status(400).json('Error: ' + err)
+            });
       })
       .catch(err => res.status(400).json('Error: ' + err));
 });
@@ -127,7 +136,7 @@ router.post('/',auth,async(req,res) =>{
         }
         inventory = new Inventory(inventoryFields);
         await inventory.save();
-        console.log('here')
+        //console.log('here')
         res.json(inventory);
 
     }catch(err){
@@ -142,7 +151,8 @@ router.post('/ingredients',auth,async(req,res)=>{
         name,
         from,
         expires,
-        quantity
+        quantity,
+        unit
 
     } = req.body;
     const IngredientField = {} ;
@@ -151,14 +161,15 @@ router.post('/ingredients',auth,async(req,res)=>{
     IngredientField.inventoryIngredientAdded = from;
     IngredientField.inventoryIngredientExpiration = expires;
     IngredientField.inventoryIngredientQuantity = quantity;
-    
-    console.log(IngredientField);
+    IngredientField.unit = unit;
+
+    //console.log(IngredientField);
     try{
         inventoryIngredient = new InventoryIngredient(IngredientField);
         await inventoryIngredient.save();
         
         const inventory = await Inventory.findOne({user:req.user.id});
-        console.log(inventory);
+        //console.log(inventory);
         inventory.IngredientName.unshift(inventoryIngredient);
         await inventory.save();
         res.json(inventory);

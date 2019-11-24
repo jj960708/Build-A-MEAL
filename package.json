@@ -42,6 +42,7 @@
     "link": "^0.1.5",
     "mongoose": "^5.7.1",
     "nodemon": "^1.19.3",
+    "query-string": "^6.9.0",
     "react": "^16.11.0",
     "react-bootstrap": "^1.0.0-beta.14",
     "react-cookie": "^4.0.1",

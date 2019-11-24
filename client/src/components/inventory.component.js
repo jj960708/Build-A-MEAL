@@ -5,18 +5,24 @@ import './stylesheets/inventory.css';
 import AddInventoryItem from './addInventory.component.js';
 import EditInventoryItem from './editInventory.component.js';
 
+
 const InventoryItem = props => ( 
-    <div className="card" style={{width: 18 + 'rem'}} onClick={(e) => props.editInventoryItem(e, props.item._id)} >
-      <img className="card-img-top" src={props.item.ingredientImage} alt={props.item.IngredientName}/>
+    /* inventory card for each inventory item, which displays the inventory ingredient name and image. When clicked on,
+    the inventory item can be edited (the name, quantity, expiration date). In addition, thers an x icon which, when clicked triggers
+    the ingredients deletion*/
+    <div className="card" style={{width: 18 + 'rem'}}  >
       <h5 className="card-title ingredient-name">{props.item.IngredientName} <span className="ingredient-delete"><a href="#" onClick={() => { props.deleteInventoryItem(props.item._id) }}><i className="fas fa-window-close"></i></a></span></h5>
-      <div className="ingredient card-body">
-        <div className="card-text">
-          <p>
-            {props.item.inventoryIngredientQuantity}
-          </p>
-          <p>
-            {props.item.inventoryIngredientExpiration.substring(0,10)}
-          </p>
+      <div  className="inventoryItem" onClick={(e) => props.editInventoryItem(e, props.item._id)}>
+        <img className="card-img-top" src={props.item.ingredientImage} alt={props.item.IngredientName}/>
+        <div className="ingredient card-body" >
+          <div className="card-text">
+            <p>
+              {props.item.inventoryIngredientQuantity} {props.item.unit}
+            </p>
+            <p>
+              {props.item.inventoryIngredientExpiration}
+            </p>
+          </div>
         </div>
       </div>
     </div>
@@ -24,6 +30,11 @@ const InventoryItem = props => (
 
 
 export default class InventoryList extends Component {
+  /*
+    InventoryList stores a list of inventory ingredients that the user has 
+    Each InventoryItem can be edited and removed. In addition, inventory ingredients can be added 
+    with the button add ingredient   
+  */
     constructor(props) {
         super(props);
 
@@ -32,11 +43,11 @@ export default class InventoryList extends Component {
         this.toggleEdit = this.toggleEdit.bind(this);
         this.state = {
           inventory: [],
-          token: Cookies.get('token'),
+          token: Cookies.get('token'), // the token is to verify user login
           isEmptyState: true,
-          isAddItemState: false,
-          isEditItemState: false,
-          editKey: null
+          isAddItemState: false,      //controls add item modal popup
+          isEditItemState: false,     //controls edit item modal popup
+          editKey: null               //specifies the inventory ID that is getting edited
         }
     }
 
@@ -44,12 +55,14 @@ export default class InventoryList extends Component {
         let config = {
           withCredentials: true
         }
-        axios.get('http://localhost:5000/api/inventory/me', config)
+        axios.get('http://localhost:5000/api/inventory/me', config)   //calls the backend for the inventory list 
+                                                                      //(returns the information needed to display inventory items) 
             .then(response => {
                 if(response.data.length > 0){
                   this.setState({
-                    inventory: response.data
+                    inventory: response.data    //sets the inventory space               
                   })
+                  console.log(this.state.inventory);
                 }
 
               }).catch(error => {
@@ -58,17 +71,17 @@ export default class InventoryList extends Component {
     }
 
 
-    deleteInventoryItem(id) {
+    deleteInventoryItem(id) { //deletes the inventory item from the users inventory list upon execution
       let headers = {
-        'x-access-token': this.state.token 
+        'x-access-token': this.state.token    //adds the users token to the get request (to be verified by Auth.jsx middleware)  
       };
       axios.delete('http://localhost:5000/api/inventory/' + id, {headers: headers, data:null}).then(res => console.log(res.data));
         this.setState({
-          inventory: this.state.inventory.filter(el => el._id !== id)
+          inventory: this.state.inventory.filter(el => el._id !== id) //additional code the remove the item from the frontend UI (updates are not caught in realtime)
         })
     }
 
-    editInventoryItem(e, id){
+    editInventoryItem(e, id){ //edit inventory item from the users inventory upon click of a given inventory item card
       this.setState({
         editKey: id,
       }, () => {
@@ -77,13 +90,13 @@ export default class InventoryList extends Component {
       });
     }
 
-    toggleEdit() {
+    toggleEdit() {    //opens and closes the edit item modal popup
       this.setState({
         isEditItemState: !this.state.isEditItemState
       });
     }
 
-    inventoryList() {
+    inventoryList() { //  generates the inventory list front-end based off the inventory list stored in the components state  
         return this.state.inventory.map(item => {
           return (
           <div className = "col-4-md">
@@ -93,7 +106,7 @@ export default class InventoryList extends Component {
         })
     }
 
-    triggerAddItemState = () => {
+    triggerAddItemState = () => { //  opens and closes the add item modal popup 
       this.setState({
         ...this.state,
         isEmptyState: false,

@@ -7,11 +7,11 @@ import Cookies from 'js-cookie';
 import "react-datepicker/dist/react-datepicker.css";
 import Autocomplete from './autocomplete.component';
 
-export default class EditInventoryItem extends Component{
+export default class UseRecipe extends Component{
     constructor(props) {
         super(props);
 
-        this.toggle  = this.props.toggle.bind(this);
+        this.toggle  = this.toggle.bind(this);
         this.onChangeIngredient = this.onChangeIngredient.bind(this);
         this.onChangeUnit = this.onChangeUnit.bind(this);
         this.onChangeAddDate = this.onChangeAddDate.bind(this);
@@ -20,52 +20,20 @@ export default class EditInventoryItem extends Component{
         this.onSubmit = this.onSubmit.bind(this);
         this.state = {
             token: Cookies.get('token'),
-            modal: true,
-            name: "",
-            addDate: null,
-            expires: null,
-            quantity: null,
+            modal: false,
+            name: new String(),
+            addDate: new Date(),
+            expires: new Date(),
+            quantity: new Number(),
             ingredientList: ['egg whites', 'watermelon chunks'],
             unitList: ['g', 'kg', 'lbs', 'oz', 'cups', 'ml', 'l', 'tsps', 'tbsps', 'qt', 'bunch', 'rip', 'scoops', 'leaves', 'drops', 'sheets', 'slices', 'inches', 'stalks', 'sticks', 
             'strips', 'sprigs', 'dashes', 'pinches'],
-            unit: ""
+            unit: new String()
         }
     }    
 
-    componentDidMount() {
-        let config = {
-            withCredentials: true
-        }
-        axios.get('http://localhost:5000/api/inventory/inventoryIngredient/'+ this.props.id, config)
-          .then(response => {
-            console.log(response);
-            this.setState({
-              name: response.data.IngredientName,
-              addDate: new Date(response.data.inventoryIngredientAdded),
-              expires: new Date(response.data.inventoryIngredientExpiration),
-              quantity: response.data.inventoryIngredientQuantity, 
-              unit: response.data.unit
-            });   
-            
-          })
-          .catch(function (error) {
-            console.log(error);
-          })
-        axios.get('http://localhost:5000/api/inventory/ingredientsList', config)
-          .then(response => {
-              //console.log("response ==", response);
-              if(response.data.ingredientsList.length > 0){
-              this.setState({
-                  ingredientList: response.data.ingredientsList
-                });
-              }
-  
-            }).catch(error => {
-              console.log(error);
-          });
-    }
-
-    onSubmit(e){  
+    onSubmit(e){
+        
         const inventoryItem = {
             name: this.state.name,
             from: this.state.addDate,
@@ -73,17 +41,34 @@ export default class EditInventoryItem extends Component{
             quantity: this.state.quantity,
             unit: this.state.unit
         }
+        console.log(inventoryItem);
+        //alert(inventoryItem);
 
         let headers = {
             'x-access-token': this.state.token 
         };
-        axios.post('http://localhost:5000/api/inventory/update/' + this.props.id, inventoryItem, {headers: headers}).then(
-          res => {
-            console.log(res.data);
-            this.toggle();
-            window.location = "/inventory";
-          });
+        axios.post('http://localhost:5000/api/inventory/ingredients', inventoryItem, {headers: headers}).then(res => console.log(res.data));
+        this.toggle();
+        //window.location = "/inventory";
+    }
 
+    componentDidMount() {
+        let config = {
+            withCredentials: true
+        }
+        console.log("in component did mount");
+        axios.get('http://localhost:5000/api/inventory/ingredientsList', config)
+        .then(response => {
+            console.log("response ==", response);
+            if(response.data.ingredientsList.length > 0){
+            this.setState({
+                ingredientList: response.data.ingredientsList
+              });
+            }
+
+          }).catch(error => {
+            console.log(error);
+        });
     }
 
     onChangeUnit(unit){
@@ -118,12 +103,22 @@ export default class EditInventoryItem extends Component{
         });
     }
 
+    toggle() {
+        this.setState({
+          modal: !this.state.modal
+        });
+    }
     
     render(){
         return(
+            <div>
+            <Button variant="primary" onClick={this.toggle}>
+              Add Food Item
+            </Button>
+      
             <Modal show={this.state.modal} onHide={this.toggle} animation={false}>
               <Modal.Header closeButton>
-                <Modal.Title>Edit Food Item</Modal.Title>
+                <Modal.Title>Add Food Item</Modal.Title>
               </Modal.Header>
               <Modal.Body>
               <Form>
@@ -131,10 +126,8 @@ export default class EditInventoryItem extends Component{
                         <Form.Label>Ingredient Name</Form.Label>
                             <Autocomplete
                                 className ="form-control"
-                                selected={this.state.name}
                                 suggestions={this.state.ingredientList} 
                                 onChange={this.onChangeIngredient}
-                                fetchSelected ={this.getName}
                             />
                     </Form.Group>
                     <Form.Group>
@@ -162,7 +155,6 @@ export default class EditInventoryItem extends Component{
                     <Form.Group>
                     <Form.Label>Unit</Form.Label>
                     <Autocomplete
-                        selected={this.state.unit}
                         className ="form-control"
                         suggestions={this.state.unitList}
                         onChange={this.onChangeUnit} 
@@ -181,6 +173,7 @@ export default class EditInventoryItem extends Component{
                 </Button>
               </Modal.Footer>
             </Modal>
+          </div>
         )
     }
 }
