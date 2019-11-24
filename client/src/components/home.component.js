@@ -20,7 +20,7 @@ export default class Login extends React.Component{
           </div>
           <div className="col-6 d-flex flex-column">
             <h2>What is Build-A-Meal?</h2>
-              <p>Responsive web design is about creating web sites which automatically adjust themselves to look good on all devices, from small phones to large desktops.</p>
+              <p>Build-A-Meal provides an easy and clean web application that allows users to maximize their efficiency in the kitchen by pairing ingredients to recipes catered to their personal preferences.</p>
               <a className="navbar-text" href="/signup" style={{color: "white"}}>Get Started Now</a>
           </div>
         </div>
