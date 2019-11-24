@@ -9,7 +9,7 @@ export default class Login extends React.Component{
       <div id="Splash" className= "d-flex flex-column align-items-center">
         <h1>Build-A-Meal</h1>
         <h2>Find recipes faster, smarter, and easier.</h2>
-        <a className="navbar-text btn btn-primary" href="/signup" style={{color: "white"}}>Start Now</a>
+        <a className="navbar-text btn btn-primary" href="/signup" style={{color: "white", fontWeight: "bold", fontSize: 20}}>Start Now</a>
       </div>
     {/* <!-- Search Bar !--> */}
 

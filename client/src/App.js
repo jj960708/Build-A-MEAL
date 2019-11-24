@@ -24,12 +24,13 @@ function App() {
         <Navbar /> 
 
         <Route path="/" exact component= {Home} />
+        <Route path="/inventory" component={withAuth(Inventory)} />
         <div className="components">
         <Route path="/login" component= {Login} />
         <Route path="/signup" component= {Signup} />
         <Route path="/register" component= {Register} />
         <Route path="/recipe" component= {withAuth(Recipe)} />
-        <Route path="/inventory" component={withAuth(Inventory)} />
+
         <Route path="/GetRecipe/:id" component={withAuth(GetRecipe)} />
         </div>
         <div className="container content">

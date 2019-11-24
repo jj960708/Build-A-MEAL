@@ -116,19 +116,19 @@ export default class InventoryList extends Component {
 
     render (){
         return(
-        <div>
-        <div className="container d-flex flex-column align-items-center">
-        <h1>Inventory</h1>
-          <div className = "row d-flex justify-content-center">
-              { this.inventoryList() }
-          </div>
+        <div id="inventory">
+          <div className="container d-flex flex-column align-items-center">
+            <h1>Inventory</h1>
+            <div className = "row d-flex justify-content-center">
+                { this.inventoryList() }
+            </div>
 
-          <div>
-            <AddInventoryItem />
+            <div>
+              <AddInventoryItem />
+            </div>
+            {this.state.isEditItemState && <EditInventoryItem toggle={this.toggleEdit} id={this.state.editKey}/>}
           </div>
-          {this.state.isEditItemState && <EditInventoryItem toggle={this.toggleEdit} id={this.state.editKey}/>}
         </div>
-      </div>
-        )
+      )
     }
 }

@@ -1,3 +1,27 @@
+#inventory{
+    white-space: nowrap;
+    background-image: url("../images/food.jpg");
+    min-height: 100vh;
+    height: 100%;
+    width: 100%;
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+#inventory h1{
+  text-align: center;
+  font-weight: bold;
+  margin-top: 0.25em;
+  margin-bottom: 0.25em;
+  padding-top: 0.25em;
+  padding-bottom: 0.25em;
+  padding-right: 100%;
+  padding-left: 100%;
+  color: white;
+  background-color: #343a40;
+  width: 100;
+}
+
 .ingredient-name{
     background-color: rgb(70, 184, 80);
     margin: 0;

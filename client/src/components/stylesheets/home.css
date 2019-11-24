@@ -59,7 +59,7 @@
     /*margin: 0 1em 1em 1em;*/
 
     white-space: nowrap;
-    background-image: url("../images/sunny.jpg");
+    background-image: url("../images/food_lowbr.jpg");
     height: 600px;
     width: 100%;
     background-size: cover;
@@ -74,6 +74,7 @@
     font-variant: small-caps;
     font-size: 5em;
     font-weight: bold;
+    color: white;
 
     /*margin: 0 1em 0.5em 0;*/
   }
@@ -85,6 +86,7 @@
     padding: 0;
     font-size: 1.2em;
     font-weight: bold;
+    color: white;
   }
 
   #home #Info {
