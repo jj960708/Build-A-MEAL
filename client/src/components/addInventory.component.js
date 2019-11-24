@@ -25,7 +25,7 @@ export default class AddInventoryItem extends Component{
             addDate: new Date(),
             expires: new Date(),
             quantity: new Number(),
-            ingredientList: ['egg whites', 'watermelon chunks'],
+            ingredientList: [],
             unitList: ['g', 'kg', 'lbs', 'oz', 'cups', 'ml', 'l', 'tsps', 'tbsps', 'qt', 'bunch', 'rip', 'scoops', 'leaves', 'drops', 'sheets', 'slices', 'inches', 'stalks', 'sticks', 
             'strips', 'sprigs', 'dashes', 'pinches'],
             unit: new String()
@@ -41,34 +41,33 @@ export default class AddInventoryItem extends Component{
             quantity: this.state.quantity,
             unit: this.state.unit
         }
-        console.log(inventoryItem);
-        //alert(inventoryItem);
+
 
         let headers = {
             'x-access-token': this.state.token 
         };
         axios.post('http://localhost:5000/api/inventory/ingredients', inventoryItem, {headers: headers}).then(res => console.log(res.data));
         this.toggle();
-        //window.location = "/inventory";
+        window.location = "/inventory";
     }
 
     componentDidMount() {
-        // let config = {
-        //     withCredentials: true
-        // }
-        // console.log("in component did mount");
-        // axios.get('http://localhost:5000/api/inventory/ingredientsList', config)
-        // .then(response => {
-        //     console.log("response ==", response);
-        //     if(response.data.ingredientsList.length > 0){
-        //     this.setState({
-        //         ingredientList: response.data.ingredientsList
-        //       });
-        //     }
+        let config = {
+            withCredentials: true
+        }
+       // console.log("in component did mount");
+        axios.get('http://localhost:5000/api/inventory/ingredientsList', config)
+        .then(response => {
+            //console.log("response ==", response);
+            if(response.data.ingredientsList.length > 0){
+            this.setState({
+                ingredientList: response.data.ingredientsList
+              });
+            }
 
-        //   }).catch(error => {
-        //     console.log(error);
-        // });
+          }).catch(error => {
+            console.log(error);
+        });
     }
 
     onChangeUnit(unit){
@@ -82,7 +81,7 @@ export default class AddInventoryItem extends Component{
         this.setState({ //this needs to refer to the class
             name: name
         })
-        console.log(this.state.name);
+        //console.log(this.state.name);
     };
     
     onChangeAddDate(date){

@@ -27,6 +27,10 @@ const ingredientSchema = new Schema({
 		required: true,
 	},
 
+	ingredientID: {
+		type: String,
+	},
+
 }, {
 	timestamps: true,
 });

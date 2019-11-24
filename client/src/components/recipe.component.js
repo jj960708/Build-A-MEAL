@@ -30,6 +30,7 @@ export default class GetRecipeItem extends Component {
         this.restoreState = this.restoreState.bind(this);
         this.displayIngredients = this.displayIngredients.bind(this);
         this.state = {
+          
           recipe:[],
           title: "",
           image: "",
@@ -148,7 +149,7 @@ export default class GetRecipeItem extends Component {
               </div>
               {/* { this.recipeList() } */}
           </div>
-          <UseRecipe missedIngredients={this.state.missedIngredients} usedIngredients={this.state.usedIngredients}/>
+          <UseRecipe id={this.props.match.params.id} missedIngredients={this.state.missedIngredients} usedIngredients={this.state.usedIngredients}/>
         </div>
       </div>
         )

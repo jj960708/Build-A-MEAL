@@ -23,10 +23,6 @@ export default class UseRecipe extends Component{
         this.state = {
             token: Cookies.get('token'),
             modal: false,
-            name: new String(),
-            addDate: new Date(),
-            expires: new Date(),
-            quantity: new Number(),
             ingredients: [],
             unitList: ['g', 'kg', 'lbs', 'oz', 'cups', 'ml', 'l', 'tsps', 'tbsps', 'qt', 'bunch', 'rip', 'scoops', 'leaves', 'drops', 'sheets', 'slices', 'inches', 'stalks', 'sticks', 
             'strips', 'sprigs', 'dashes', 'pinches'],
@@ -35,21 +31,13 @@ export default class UseRecipe extends Component{
     }    
 
     onSubmit(e){
-        
-        const inventoryItem = {
-            name: this.state.name,
-            from: this.state.addDate,
-            expires: this.state.expires,
-            quantity: this.state.quantity,
-            unit: this.state.unit
-        }
-        console.log(inventoryItem);
+
         //alert(inventoryItem);
 
         let headers = {
             'x-access-token': this.state.token 
         };
-        axios.post('http://localhost:5000/api/inventory/ingredients', inventoryItem, {headers: headers}).then(res => console.log(res.data));
+        axios.post('http://localhost:5000/api/recipe/useRecipe/' + this.props.id, this.state.ingredients, {headers: headers}).then(res => console.log(res.data));
         this.toggle();
         //window.location = "/inventory";
     }
@@ -59,6 +47,7 @@ export default class UseRecipe extends Component{
         for(var i = 0; i < nextProps.usedIngredients.length; i++){
             var ingredient = {
                 name: nextProps.usedIngredients[i].name,
+                id: nextProps.usedIngredients[i].id,
                 amount: nextProps.usedIngredients[i].amount,
                 unit: nextProps.usedIngredients[i].unit,
                 index: i

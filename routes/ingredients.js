@@ -16,7 +16,8 @@ router.route('/ingredientsEdit').post(async (req, res) => {
                 ingredientName: ingredient.ingredientName,
                 ingredientType: ingredient.ingredientType,
                 ingredientImage: IngredImage,
-                ingredientQuantityMeasureValue: ingredient.ingredientQuantityMeasureValue
+                ingredientQuantityMeasureValue: ingredient.ingredientQuantityMeasureValue,
+                ingredientID: ingredient.ingredientID,
             });
             ingredient.save().then(() => {
                 console.log(ingredient);
@@ -26,6 +27,45 @@ router.route('/ingredientsEdit').post(async (req, res) => {
     })
 });
 
+router.route('/addID').get(async (req, res) => {
+    const file = "./assets/top-1k-ingredients.csv";
+
+    //api.analyzeARecipeSearchQuery(q, callback);
+
+    continue_request = 0;
+    var possible_ingredients = await Ingredient.find({}, async (err, ingredients)=>{
+        return ingredients;
+    });
+    //console.log(current_index);
+    fs.createReadStream(file)
+    .pipe(csv())
+    .on('data', (row) => {
+        if(continue_request == 0){
+            possible_ingredients.forEach(ingredient => {
+                if(ingredient.ingredientName == row.Ingredient){
+                //console.log("new image ==",IngredImage);
+                    ingredient.overwrite({
+                        ingredientName: ingredient.ingredientName,
+                        ingredientType: ingredient.ingredientType,
+                        ingredientImage: ingredient.ingredientImage,
+                        ingredientQuantityMeasureValue: ingredient.ingredientQuantityMeasureValue,
+                        ingredientID: row.ID
+                    });
+                    ingredient.save().then(() => {
+                        console.log(ingredient);
+                    });
+                }
+                
+            });
+        }
+            
+    })
+    .on('end', () => {
+        console.log('CSV file successfully processed');
+    });    
+})   
+
+
 router.route('/').get((req, res) => {
     const file = "./assets/top-1k-ingredients.csv";
     var current_index;
@@ -34,15 +74,13 @@ router.route('/').get((req, res) => {
 
     IngredientIndex.findById("5d9b37a2a371e34b10cc2a87")
     .then(index => {
-        current_index = index.ingredientIndex;
-        continue_request = 0;
+        var continue_request = 0
         //console.log(current_index);
         fs.createReadStream(file)
         .pipe(csv())
         .on('data', (row) => {
             if(continue_request == 0){
-                continue_request +=1;
-                current_index += 1;
+                //continue_request +=1;
                 const req_str = 'https://api.spoonacular.com/food/ingredients/' + row.ID +  '/information'
                 axios.get(req_str, {
                     params: {
@@ -53,6 +91,7 @@ router.route('/').get((req, res) => {
                 }).then(resp => {
                     const ingredientName = row.Ingredient;
                     const ingredientType = resp.data.aisle;
+                    const ingredientID = row.ID;
                     var ingredientImage; 
                     var ingredientQuantityMeasureValue;
                     if(resp.data.image){
@@ -75,10 +114,12 @@ router.route('/').get((req, res) => {
                         ingredientType,
                         ingredientImage,
                         ingredientQuantityMeasureValue,
+                        ingredientID,
                     });
                     //console.log("made newIngredient!");
                     newIngredient.save()
                         .then(() => console.log('Ingredient added!'))
+                        
                 }).catch(err =>{
                     console.log(err);
                 })
@@ -86,13 +127,7 @@ router.route('/').get((req, res) => {
         })
         .on('end', () => {
             console.log('CSV file successfully processed');
-            console.log("This is current_index",current_index);
-            index.ingredientIndex = current_index;
-
-            index.save()
-                .then(() => console.log('index Updated!'))
-                .catch(err => res.status(400).json('Error: ' + err));  
-            res.json("Index updated!");
+            return res.status(200).json({msg: "SUCCESS!"})
         });    
     })   
 });

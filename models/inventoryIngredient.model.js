@@ -8,6 +8,7 @@ const inventoryIngredientSchema = new Schema({
 		ref:'User'
 
 	},
+
 	IngredientName: {
 		type: String,
 		required: true,
