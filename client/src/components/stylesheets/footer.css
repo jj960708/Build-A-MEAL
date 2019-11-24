@@ -16,3 +16,8 @@
   color: #ffffff;
   padding: 0 2em 0.5em 0;
 }
+
+.content {
+  padding: 10px;
+  padding-bottom: 60px;
+}

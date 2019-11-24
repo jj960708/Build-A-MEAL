@@ -53,22 +53,22 @@ export default class AddInventoryItem extends Component{
     }
 
     componentDidMount() {
-        let config = {
-            withCredentials: true
-        }
-        console.log("in component did mount");
-        axios.get('http://localhost:5000/api/inventory/ingredientsList', config)
-        .then(response => {
-            console.log("response ==", response);
-            if(response.data.ingredientsList.length > 0){
-            this.setState({
-                ingredientList: response.data.ingredientsList
-              });
-            }
+        // let config = {
+        //     withCredentials: true
+        // }
+        // console.log("in component did mount");
+        // axios.get('http://localhost:5000/api/inventory/ingredientsList', config)
+        // .then(response => {
+        //     console.log("response ==", response);
+        //     if(response.data.ingredientsList.length > 0){
+        //     this.setState({
+        //         ingredientList: response.data.ingredientsList
+        //       });
+        //     }
 
-          }).catch(error => {
-            console.log(error);
-        });
+        //   }).catch(error => {
+        //     console.log(error);
+        // });
     }
 
     onChangeUnit(unit){

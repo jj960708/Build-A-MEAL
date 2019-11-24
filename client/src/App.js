@@ -12,6 +12,7 @@ import Inventory from "./components/inventory.component";
 import withAuth from './components/withAuth';
 import Recipe from './components/recipes.component.js';
 import GetRecipe from './components/recipe.component.js';
+import './components/stylesheets/app.css';
 // import EditExercise from "./components/edit-exercise.component";
 // import CreateExercise from "./components/create-exercise.component"; 
 // import CreateUser from "./components/create-user.component";
@@ -19,16 +20,19 @@ import GetRecipe from './components/recipe.component.js';
 function App() {
   return (
     <Router>
-      <div className="">  
+      <div className="background">  
         <Navbar /> 
+
         <Route path="/" exact component= {Home} />
+        <div className="components">
         <Route path="/login" component= {Login} />
         <Route path="/signup" component= {Signup} />
         <Route path="/register" component= {Register} />
         <Route path="/recipe" component= {withAuth(Recipe)} />
         <Route path="/inventory" component={withAuth(Inventory)} />
         <Route path="/GetRecipe/:id" component={withAuth(GetRecipe)} />
-        <div className="container">
+        </div>
+        <div className="container content">
         </div>
         <Footer />
       </div>

@@ -117,9 +117,9 @@ export default class InventoryList extends Component {
     render (){
         return(
         <div>
-        <h3>Inventory</h3>
-        <div className="container">
-          <div className = "row">
+        <div className="container d-flex flex-column align-items-center">
+        <h1>Inventory</h1>
+          <div className = "row d-flex justify-content-center">
               { this.inventoryList() }
           </div>
 

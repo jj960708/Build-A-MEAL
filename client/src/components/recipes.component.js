@@ -5,6 +5,7 @@ import GetRecipeItem from './recipe.component.js';
 import { isThisMonth } from 'date-fns/esm';
 import {Button, Modal, Form} from 'react-bootstrap';
 import Select from 'react-select';
+import './stylesheets/recipes.css';
 const queryString = require('query-string');
 
 const RecipeItem = props => (
@@ -13,7 +14,7 @@ const RecipeItem = props => (
     When the recipe is clicked on, the page will redirect to display the recipe instructions.
   */
   <Link to={"/GetRecipe/"+props.item.id+"?"+props.info}>
-    <div className="card" style={{width: 18 + 'rem'}}  >
+    <div className="card recipe-card" style={{width: 18 + 'rem'}}  >
       <img src={props.item.image} alt={props.item.title}/>
       <div className="card-body">
         <h5 className="card-title">{props.item.title}</h5>
@@ -213,7 +214,7 @@ export default class recipeList extends Component {
 
     render (){
        return(
-        <div>
+        <div className="container d-flex flex-column align-items-center">
          
         <h3>Recipes</h3>
         <div className="row" >
@@ -238,7 +239,7 @@ export default class recipeList extends Component {
         </div>
         </div>
         <div className="container" >
-          <div className = "row">
+          <div className = "row d-flex justify-content-center">
               { this.recipeList() }
           </div>
         </div>

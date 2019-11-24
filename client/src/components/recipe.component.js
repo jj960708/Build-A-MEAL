@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import UseRecipe from './useRecipe.component.js';
+import './stylesheets/recipe.css';
 const queryString = require('query-string');
 
 
@@ -27,6 +28,7 @@ export default class GetRecipeItem extends Component {
         //this.deleteInventoryItem = this.deleteInventoryItem.bind(this);
         this.toggleRecipe = this.toggleRecipe.bind(this);
         this.restoreState = this.restoreState.bind(this);
+        this.displayIngredients = this.displayIngredients.bind(this);
         this.state = {
           recipe:[],
           title: "",
@@ -36,35 +38,54 @@ export default class GetRecipeItem extends Component {
           missedIngredients: [],
           useRecipe: false
         }
+
         
     }
     
     async componentDidMount(){
         console.log(this.props.match.params.id);
-        axios.get(`http://localhost:5000/api/recipe/find/${this.props.match.params.id}`)
-            .then(response => {
-                if(response.data){
-                  console.log(response);
-                  this.setState({
-                    recipe: response.data[0].steps
-                  })
+        // axios.get(`http://localhost:5000/api/recipe/find/${this.props.match.params.id}`)
+        //     .then(response => {
+        //         if(response.data){
+        //           console.log(response);
+        //           this.setState({
+        //             recipe: response.data[0].steps
+        //           })
 
-                }
-                    return console.log(response.data);
+        //         }
+        //             return console.log(response.data);
 
-              }).catch(error => {
-                this.setState({
-                  recipe: [{
-                    number:-1,
-                    step:"RECIPE INSTUCTIONS NOT FOUND"
-                  }] 
-                });
-                console.log(error);
-            });
+        //       }).catch(error => {
+        //         this.setState({
+        //           recipe: [{
+        //             number:-1,
+        //             step:"RECIPE INSTUCTIONS NOT FOUND"
+        //           }] 
+        //         });
+        //         console.log(error);
+        //     });
       await this.restoreState();
+      console.log("restored state!");
+      
     }
 
-
+    displayIngredients(){
+     var missedIngredients = this.state.missedIngredients.map(item => {
+        return (
+          <li>{item.name} ({item.amount} {item.unit})</li>
+        );
+      });
+      var usedIngredients = this.state.usedIngredients.map(item=>{
+        return (
+          <li>{item.name}  ({item.amount} {item.unit})</li>
+        );
+      });
+      var totalIngredients = missedIngredients;
+      for(var i = 0; i < usedIngredients.length; i++ ){
+        totalIngredients.push(usedIngredients[i]);
+      }
+      return totalIngredients;
+    }
 
     recipeList() {
         return this.state.recipe.map(item => {
@@ -91,7 +112,6 @@ export default class GetRecipeItem extends Component {
           var usedIngredients = recipeInfo.usedIngredients;
           console.log(recipeInfo);
           //console.log(JSON.parse(radioRequestString));
-          console.log("hereeee\n");
           this.setState({
             title: title,
             missedIngredients: missedIngredients,
@@ -103,6 +123,7 @@ export default class GetRecipeItem extends Component {
           });
       }
       return new Promise(function(resolve, reject){
+        console.log("returning promise!");
         resolve();
       });
   }
@@ -115,15 +136,19 @@ export default class GetRecipeItem extends Component {
 
     render (){
         return(
-        <div>
-        <h3>Recipes Instruction</h3>
-        <div className="container">
-          <h1>{ this.state.title }</h1>
+        <div className>
+
+        <div className="container d-flex flex-column align-items-center">
+          <h1 class ="recipe-title">{ this.state.title }</h1>
           <img className="" src={this.state.image} alt={this.state.title}/>
           <div className = "">
-              { this.recipeList() }
+              <div className = "recipe-ingredients">
+                <h3>Ingredients</h3>
+                { this.displayIngredients() }
+              </div>
+              {/* { this.recipeList() } */}
           </div>
-          <UseRecipe/>
+          <UseRecipe missedIngredients={this.state.missedIngredients} usedIngredients={this.state.usedIngredients}/>
         </div>
       </div>
         )

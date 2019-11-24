@@ -12,12 +12,14 @@ export default class UseRecipe extends Component{
         super(props);
 
         this.toggle  = this.toggle.bind(this);
+        this.displayIngredientForm = this.displayIngredientForm.bind(this);
         this.onChangeIngredient = this.onChangeIngredient.bind(this);
         this.onChangeUnit = this.onChangeUnit.bind(this);
         this.onChangeAddDate = this.onChangeAddDate.bind(this);
         this.onChangeExpiresDate = this.onChangeExpiresDate.bind(this);
         this.onChangeQuantity = this.onChangeQuantity.bind(this);
         this.onSubmit = this.onSubmit.bind(this);
+        this.displayMissedIngredients = this.displayMissedIngredients.bind(this);
         this.state = {
             token: Cookies.get('token'),
             modal: false,
@@ -25,7 +27,7 @@ export default class UseRecipe extends Component{
             addDate: new Date(),
             expires: new Date(),
             quantity: new Number(),
-            ingredientList: ['egg whites', 'watermelon chunks'],
+            ingredients: [],
             unitList: ['g', 'kg', 'lbs', 'oz', 'cups', 'ml', 'l', 'tsps', 'tbsps', 'qt', 'bunch', 'rip', 'scoops', 'leaves', 'drops', 'sheets', 'slices', 'inches', 'stalks', 'sticks', 
             'strips', 'sprigs', 'dashes', 'pinches'],
             unit: new String()
@@ -52,29 +54,31 @@ export default class UseRecipe extends Component{
         //window.location = "/inventory";
     }
 
-    componentDidMount() {
-        let config = {
-            withCredentials: true
-        }
-        console.log("in component did mount");
-        axios.get('http://localhost:5000/api/inventory/ingredientsList', config)
-        .then(response => {
-            console.log("response ==", response);
-            if(response.data.ingredientsList.length > 0){
-            this.setState({
-                ingredientList: response.data.ingredientsList
-              });
+    componentWillReceiveProps(nextProps) {
+        var ingredients = [];
+        for(var i = 0; i < nextProps.usedIngredients.length; i++){
+            var ingredient = {
+                name: nextProps.usedIngredients[i].name,
+                amount: nextProps.usedIngredients[i].amount,
+                unit: nextProps.usedIngredients[i].unit,
+                index: i
             }
-
-          }).catch(error => {
-            console.log(error);
+            ingredients.push(ingredient);
+        }
+        this.setState({
+            ingredients: ingredients
         });
     }
 
-    onChangeUnit(unit){
-        this.setState({ //this needs to refer to the class
-            unit: unit
-        })
+    onChangeUnit(unit, index){
+        var ingredients = this.state.ingredients;
+        ingredients[index].unit = unit;
+        this.setState({
+            ingredients: ingredients
+        }, () => {
+            console.log(this.state.ingredients);
+        });
+        
 
     };
 
@@ -97,9 +101,11 @@ export default class UseRecipe extends Component{
         });
     };
 
-    onChangeQuantity(e){
+    onChangeQuantity(e, index){
+        var ingredients = this.state.ingredients;;
+        ingredients[index].amount = e.target.value;
         this.setState({
-            quantity: e.target.value
+            ingredients: ingredients
         });
     }
 
@@ -108,58 +114,58 @@ export default class UseRecipe extends Component{
           modal: !this.state.modal
         });
     }
+
+    displayIngredientForm(){
+        return this.state.ingredients.map(item => {
+            
+            return (
+                <div className="d-flex flex-row">
+                <h4 className="recipe-item-name">{item.name}</h4>
+                <div className="d-flex flex-row unit-info">
+                <Form.Group>
+                    <Form.Control className="quantity-field" type="number" onChange={(e) => this.onChangeQuantity(e, item.index)} value={item.amount}/>
+                </Form.Group>
+                    <Form.Group>
+                    <Autocomplete
+                        selected = {item.unit}
+                        className ="form-control quantity-field"
+                        suggestions={this.state.unitList}
+                        onChange={(e) => this.onChangeUnit(e, item.index)} 
+                    />
+                </Form.Group>
+                </div>
+                </div>
+            );
+        })
+    }
+
+    displayMissedIngredients(){
+        return this.props.missedIngredients.map(item => {
+            return (
+                <li className="">{item.name} ({item.amount} {item.unit})</li>
+            );
+        })
+    }
     
     render(){
         return(
             <div>
             <Button variant="primary" onClick={this.toggle}>
-              Add Food Item
+              Use Recipe
             </Button>
       
             <Modal show={this.state.modal} onHide={this.toggle} animation={false}>
               <Modal.Header closeButton>
-                <Modal.Title>Add Food Item</Modal.Title>
+                <Modal.Title>Use Recipe</Modal.Title>
               </Modal.Header>
               <Modal.Body>
               <Form>
-                    <Form.Group>
-                        <Form.Label>Ingredient Name</Form.Label>
-                            <Autocomplete
-                                className ="form-control"
-                                suggestions={this.state.ingredientList} 
-                                onChange={this.onChangeIngredient}
-                            />
-                    </Form.Group>
-                    <Form.Group>
-                        <Form.Label>Date added</Form.Label>
-                        <br></br>
-                        <DatePicker
-                            className="form-control"
-                            selected={this.state.addDate}
-                            onChange={this.onChangeAddDate}
-                        />
-                    </Form.Group>
-                    <Form.Group>
-                        <Form.Label>Expires</Form.Label>
-                        <br></br>
-                        <DatePicker
-                            className ="form-control"
-                            selected={this.state.expires}
-                            onChange={this.onChangeExpiresDate}
-                        />
-                    </Form.Group>
-                    <Form.Group>
-                    <Form.Label>Quantity</Form.Label>
-                    <Form.Control type="number" onChange={this.onChangeQuantity} value={this.state.quantity}/>
-                    </Form.Group>
-                    <Form.Group>
-                    <Form.Label>Unit</Form.Label>
-                    <Autocomplete
-                        className ="form-control"
-                        suggestions={this.state.unitList}
-                        onChange={this.onChangeUnit} 
-                    />
-                    </Form.Group>
+                    {this.displayIngredientForm()}
+                    
+                    <h3 className="text-center">Missed Ingredients</h3>
+                    <ul>
+                    {this.displayMissedIngredients()}
+                    </ul>
               </Form>
                 
 
@@ -169,7 +175,7 @@ export default class UseRecipe extends Component{
                   Close
                 </Button>
                 <Button variant="primary" onClick={this.onSubmit}>
-                  Save Changes
+                  Use Recipe
                 </Button>
               </Modal.Footer>
             </Modal>
