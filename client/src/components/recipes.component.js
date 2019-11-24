@@ -4,13 +4,14 @@ import axios from 'axios';
 import GetRecipeItem from './recipe.component.js';
 import { isThisMonth } from 'date-fns/esm';
 import {Button, Modal, Form} from 'react-bootstrap';
+const queryString = require('query-string');
 
 const RecipeItem = props => (
   /*
     Generates RecipeItem card. Each recipe item card has the recipe name along with the image of the recipe
     When the recipe is clicked on, the page will redirect to display the recipe instructions.
   */
-  <Link to={"/GetRecipe/"+props.item.id}>
+  <Link to={"/GetRecipe/"+props.item.id+"?"+props.info}>
     <div className="card" style={{width: 18 + 'rem'}}  >
       <img src={props.item.image} alt={props.item.title}/>
       <div className="card-body">
@@ -96,9 +97,12 @@ export default class recipeList extends Component {
 
     recipeList() {
       return this.state.recipe.map(item => {
+        var query = queryString.stringify({
+          info: JSON.stringify(item), 
+        }); 
         return (
         <div className = "col-4-md">
-          <RecipeItem item={item}  key={item.id} getRecipeItem = {this.getRecipeItem} />
+          <RecipeItem info = {query} item={item}  key={item.id} getRecipeItem = {this.getRecipeItem} />
         </div>
         );
       })
