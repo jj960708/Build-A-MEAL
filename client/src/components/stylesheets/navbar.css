@@ -14,4 +14,10 @@
     opacity: 100%;
 
     color: white !important;
+
 }
+
+.nav-link:hover{
+    cursor: pointer;
+}
+

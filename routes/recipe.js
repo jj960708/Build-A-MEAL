@@ -169,7 +169,8 @@ router.post("/useRecipe/:id", auth, async (req, res) => {
                 var ingredient = await InventoryIngredient.findOne({IngredientName: ingredientItem.ingredientName, user: req.user.id });
             }
             var quantity_deduct;
-            if(ingredient.unit != ingredientslist[i].unit){
+
+            if(ingredient.unit != ingredientslist[i].unit && (ingredient.unit != "" && ingredientslist[i].unit != "")){
                 var convert_req = "https://api.spoonacular.com/recipes/convert"
                 console.log("in the if statement");
                 console.log("ingredients: ",ingredientslist[i]);
