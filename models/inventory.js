@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 
 const Schema = mongoose.Schema;
-
+//inventory schema
 const inventorySchema = new Schema({
 	user:{
 		type:Schema.Types.ObjectId,

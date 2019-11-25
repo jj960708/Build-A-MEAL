@@ -6,6 +6,7 @@ const InventoryIngredient = require('../models/inventoryIngredient.model');
 const Inventory = require('../models/inventory');
 let Ingredient = require('../models/ingredient.model'); 
 
+//get ingredient names from a recipe
 const get_ingredient_names = function(ingredientsList){
     const ingredientNames = ingredientsList.map(ingredient => {
         return ingredient.IngredientName;
@@ -13,6 +14,7 @@ const get_ingredient_names = function(ingredientsList){
     return ingredientNames;
 }
 
+//query spoonacular for 15 recipes based on the ingredients that the user has
 router.post("/", async (req, res) => {
     
     try{
@@ -40,6 +42,7 @@ router.post("/", async (req, res) => {
     }
 
 });
+//find recipe info
 router.get("/findrecipe/:id", async (req, res) => {
     
     try{
@@ -64,6 +67,7 @@ router.get("/findrecipe/:id", async (req, res) => {
     }
 
 });
+//get more specific data info based on an id
 router.get("/find/:id", async (req, res) => {
     
     try{
@@ -88,7 +92,7 @@ router.get("/find/:id", async (req, res) => {
     }
 
 });
-
+//get ingredient info from a recipe based on id
 const addIngredient = function(ID){
     const req_str = 'https://api.spoonacular.com/food/ingredients/' + ID +  '/information'
     axios.get(req_str, {
@@ -130,7 +134,7 @@ const addIngredient = function(ID){
     
 }
 
-
+//use recipe and subtract the ingredients used from the inventory
 router.post("/useRecipe/:id", auth, async (req, res) => {
 
     try{

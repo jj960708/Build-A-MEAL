@@ -5,7 +5,7 @@ const axios = require('axios');
 let IngredientIndex = require('../models/ingredientIndex.model');
 let Ingredient = require('../models/ingredient.model');
 
-
+//allow user to edit the ingredient data
 router.route('/ingredientsEdit').post(async (req, res) => {
     Ingredient.find({}, async (err, ingredients)=>{
         ingredients.forEach(ingredient => {
@@ -65,7 +65,7 @@ router.route('/addID').get(async (req, res) => {
     });    
 })   
 
-
+//populate the database with ingredients
 router.route('/').get((req, res) => {
     const file = "./assets/top-1k-ingredients.csv";
     var current_index;

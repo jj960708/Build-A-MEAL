@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 
 const Schema = mongoose.Schema;
-
+//schema to store non-spoonacular data about the ingredients
 const inventoryIngredientSchema = new Schema({
 	user:{
 		type:Schema.Types.ObjectId,

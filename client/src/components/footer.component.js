@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import './stylesheets/footer.css';
-
+//important links related to the group
 export default class Footer extends Component {
   
   render() {

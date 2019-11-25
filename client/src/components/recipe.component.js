@@ -5,7 +5,7 @@ import UseRecipe from './useRecipe.component.js';
 import './stylesheets/recipe.css';
 const queryString = require('query-string');
 
-
+//component for recipe card
 const RecipeItem = props => (
     <div className="row">
     <div className="card" style={{width: 100 + '%', height: 10 + "rem"}}>
@@ -69,7 +69,7 @@ export default class GetRecipeItem extends Component {
       console.log("restored state!");
       
     }
-
+    //displays all ingredients in the recipe
     displayIngredients(){
      var missedIngredients = this.state.missedIngredients.map(item => {
         return (

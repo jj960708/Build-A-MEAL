@@ -1,7 +1,7 @@
 import React from 'react';
 import './stylesheets/home.css';
 import background from "./images/sunny.jpg"
-
+//home component to explain some info on the web app
 export default class Login extends React.Component{
   render(){
     return(

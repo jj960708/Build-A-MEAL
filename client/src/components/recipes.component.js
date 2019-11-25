@@ -149,7 +149,7 @@ export default class recipeList extends Component {
         display: !this.state.display
       });
     }
-
+    //allows user the option to sort the recipes by quickest prep time
     async sortByPreptime(){
       var tmp = [];
       var i;
@@ -178,7 +178,7 @@ export default class recipeList extends Component {
       );
       return console.log(tmp);
     }
-
+    //allows the user to sort the recipes by their desired cuisine type
     async Cusisinetype(value){
       var tmp = [];
       var i;
@@ -207,7 +207,7 @@ export default class recipeList extends Component {
       return console.log(tmp);
     }
 
-    
+    //allows the user to sort the recipes based on meal type (breakfast, lunch, dinner, dessert)
     async MealType(value){
       var tmp = [];
       var i;

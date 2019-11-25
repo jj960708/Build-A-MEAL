@@ -1,9 +1,11 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
+//component for user registration
 class Register extends Component {
   constructor() {
     super();
     this.state = {
+      //desired fields
       name: "",
       email: "",
       password: "",
@@ -16,6 +18,7 @@ onChange = e => {
   };
 onSubmit = e => {
     e.preventDefault();
+  //creates new user
 const newUser = {
       name: this.state.name,
       email: this.state.email,
