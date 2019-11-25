@@ -1,6 +1,6 @@
 .components{
     padding-top: 100px;
-    white-space: nowrap;
+    white-space: normal;
     background-image: url("../images/food_lowbr.jpg");
     min-height: 100vh;
     height: 100%;

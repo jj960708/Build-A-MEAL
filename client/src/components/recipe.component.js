@@ -139,9 +139,15 @@ export default class GetRecipeItem extends Component {
         return(
         <div className>
 
-        <div className="container d-flex flex-column align-items-center">
-          <h1 class ="recipe-title">{ this.state.title }</h1>
-          <img className="" src={this.state.image} alt={this.state.title}/>
+        <div className="container card w-75 d-flex flex-column align-items-center" >
+          
+   
+          
+          <img className="card-img-top" src={this.state.image} alt={this.state.title}/>
+          <div class="card-body">
+          <h5 class="card-title">{this.state.title}</h5>
+    
+        </div>
           <div className = "">
               <div className = "recipe-ingredients">
                 <h3>Ingredients</h3>

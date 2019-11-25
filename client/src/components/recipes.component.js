@@ -47,12 +47,36 @@ export default class recipeList extends Component {
         };
         this.cusineoptions = [
           { value: 'American', label: 'American' },
-          { value: 'African', label: 'African' }
+          { value: 'African', label: 'African' },
+          { value: 'British', label: 'British' },
+          { value: 'Chinese', label: 'Chinese' },
+          { value: 'European', label: 'European' },
+          { value: 'French', label: 'French' },
+          { value: 'Cajun', label: 'Cajun' },
+          { value: 'Greek', label: 'Greek' },
+          { value: 'German', label: 'German' },
+          { value: 'Indian', label: 'Indian' },
+          { value: 'Irish', label: 'Irish' },
+          { value: 'Italian', label: 'Italian' },
+          { value: 'Japanese', label: 'Japanese' },
+          { value: 'Jewish', label: 'Jewish' },
+          { value: 'Korean', label: 'Korean' },
+          { value: 'Latin American', label: 'Latin American' },
+          { value: 'Mediterranean', label: 'Mediterranean' },
+          { value: 'Mexican', label: 'Mexican' },
+          { value: 'Middle Eastern', label: 'Middle Eastern' },
+          { value: 'Nordic', label: 'Nordic' },
+          { value: 'Southern', label: 'Southern' },
+          { value: 'Spanish', label: 'Spanish' },
+          { value: 'Thai', label: 'Thai' },
+          { value: 'Vietnamese', label: 'Vietnamese' }
+
         ];
         this.mealoptions = [
-          { value: 'breakfirst', label: 'breakfirst' },
+          { value: 'breakfast', label: 'breakfast' },
           { value: 'lunch', label: 'lunch' },
-          { value: 'dinner', label: 'dinner' }
+          { value: 'dinner', label: 'dinner' },
+          { value: 'side dish', label: 'side dish' }
         ];
     }
 
@@ -163,7 +187,7 @@ export default class recipeList extends Component {
         await axios.get(`http://localhost:5000/api/recipe/findrecipe/${this.state.recipe[i].id}`)
         .then(response => {
           
-          if(response.data && response.data.cuisines===value){
+          if(response.data && response.data.cuisines.includes(value)){
             var promise = response.data;
             tmp.push(promise);
             
