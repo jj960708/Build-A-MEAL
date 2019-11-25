@@ -159,8 +159,8 @@ export default class recipeList extends Component {
         .then(response => {
           if(response.data){
             console.log(response.data.cuisines);
-            var promise = response.data;
-            tmp.push(promise);
+            var recipe_info = {...this.state.recipe[i], ...response.data};     
+            tmp.push(recipe_info);
             
           }
           
@@ -188,8 +188,8 @@ export default class recipeList extends Component {
         .then(response => {
           
           if(response.data && response.data.cuisines.includes(value)){
-            var promise = response.data;
-            tmp.push(promise);
+            var recipe_info = {...this.state.recipe[i], ...response.data};     
+            tmp.push(recipe_info);
             
           }
           
@@ -217,8 +217,8 @@ export default class recipeList extends Component {
         .then(response => {
           
           if(response.data && response.data.dishTypes.includes(value)){
-            var promise = response.data;
-            tmp.push(promise);
+            var recipe_info = {...this.state.recipe[i], ...response.data};     
+            tmp.push(recipe_info);
             
           }
           

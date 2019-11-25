@@ -52,11 +52,15 @@ export default class Login extends Component{
     console.log(signup_info);
 
     axios.post('/api/users', signup_info)
-        .then(res => console.log(res.data)).catch(err =>{
+        .then(res => {
+          console.log(res.data)
+          window.location = "/inventory";
+        }).catch(err =>{
           console.log(err);
+          alert(err.response.data.errors[0].msg);
+          
         });
 
-    window.location = "/inventory";
   }
   render(){
     return(
@@ -66,7 +70,7 @@ export default class Login extends Component{
                 <h3 style={m_b_10} className="card-title">Sign Up</h3>
                 <form className="form-group" onSubmit={this.onSubmit}>
                     <input style={m_b_10} className="form-control" type="text" placeholder="Enter Username" name="name" value={this.state.name} onChange={this.onChangeName} required/>
-                    <input style={m_b_10} className="form-control" type="text" placeholder="Enter Email" name="email" value={this.state.email} onChange={this.onChangeEmail} required/>
+                    <input style={m_b_10} className="form-control" type="email" placeholder="Enter Email" name="email" value={this.state.email} onChange={this.onChangeEmail} required/>
                     <input style={m_b_10} className="form-control" type="password" placeholder="Enter Password" name="psw" value={this.state.password} onChange={this.onChangePassword} required/>
                     <button className="btn btn-primary" classtype="submit">Sign Up</button>
                 </form>

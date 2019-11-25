@@ -19,6 +19,7 @@ export default class Login extends Component{
         email : '',
         password : '',
         success : true,
+        errmsg: ""
     }
 
   }
@@ -51,6 +52,7 @@ export default class Login extends Component{
         }).catch(err =>{
           this.setState({
             success: false,
+            errmsg: err.response.data.errors[0].msg  
           })
           console.log(err);
     });
@@ -62,9 +64,13 @@ export default class Login extends Component{
           <div className = "card" style={{width: 30 + 'rem'}}>
             <div className="card-body">
                 <h3 style={m_b_10} className="card-title">Login</h3>
-                {!this.state.success && <p className="text-center" style={{backgroundColor: "#ffc0cb", color : "red", border: "solid", borderWidth: 1}}>Invalid user credentials</p>}
+                {!this.state.success && 
+                <div class="alert alert-danger" role="alert">
+                    {this.state.errmsg}
+                </div> 
+                }
                 <form className="form-group" onSubmit={this.onSubmit}>
-                  <input style={m_b_10} className="form-control" type="text" placeholder="Enter Email" name="email" value={this.state.email} onChange={this.onChangeEmail} required/>
+                  <input style={m_b_10} className="form-control" type="email" placeholder="Enter Email" name="email" value={this.state.email} onChange={this.onChangeEmail} required/>
                   <input style={m_b_10} className="form-control" type="password" placeholder="Enter Password" name="psw" value={this.state.password} onChange={this.onChangePassword} required/>
                   <button className="btn btn-primary" classtype="submit">Login</button>
 
