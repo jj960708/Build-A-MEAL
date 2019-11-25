@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 
 const Schema = mongoose.Schema;
-
+//schema for storing ingredient index
 const ingredientIndexSchema = new Schema({
 	ingredientIndex: {
 		type: Number,

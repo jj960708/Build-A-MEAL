@@ -2,6 +2,7 @@ const mongoose = require('mongoose');
 
 const Schema = mongoose.Schema;
 
+//ingredient model, contains a name, type, image, quantity value, id
 const ingredientSchema = new Schema({
 	ingredientName: {
 		type: String,
