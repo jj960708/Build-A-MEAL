@@ -21,7 +21,7 @@ const get_inventory_ingredients = async function(inventoryList){
         }
         var measure_word = ingredient["ingredientQuantityMeasureValue"];
         var options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
-        console.log(inventoryIngredient["inventoryIngredientAdded"].toLocaleDateString("en-US", options));
+        //console.log(inventoryIngredient["inventoryIngredientAdded"].toLocaleDateString("en-US", options));
         inventoryIngredient = {
             "_id": inventoryList[i],
             "IngredientName": inventoryIngredient["IngredientName"],

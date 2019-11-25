@@ -1,3 +1,53 @@
+#inventory{
+    /* white-space: nowrap; */
+    /* background-image: url("../images/food.jpg");
+    min-height: 100vh;
+    height: 100%; */
+    width: 100%;
+    padding: 0;
+    padding-top: 80px;
+    margin: 0;
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+.inventory-items{
+  padding-top: 30px;
+}
+
+.inventory-item{
+  margin: 10px;
+}
+
+.inventory-card{
+  margin-top: 20px;
+  width: 100%;
+
+}
+
+.card{
+  border-width: 0px !important;
+}
+
+#inventory h1{
+  text-align: center;
+  font-weight: bold;
+  /* margin-top: 1em;
+  margin-bottom: 0.25em;
+  padding-top: 0.25em;
+  padding-bottom: 0.25em;
+  padding-right: 100%;
+  padding-left: 100%; */
+  color: white;
+  background-color: rgb(70, 184, 80);
+  width: 100;
+}
+
+.ingredient {
+  font-size: 100% !important;
+  height: 67px;
+}
+
 .ingredient-name{
     background-color: rgb(70, 184, 80);
     margin: 0;
@@ -21,6 +71,14 @@
     color: white;
 }
 
+.inventoryItem{
+  height: 350px;
+}
+
+.inventoryItem>img{
+  height: 250px;
+}
+
 :hover.ingredient-delete > a{
     color: rgb(196, 196, 196);
 }
@@ -35,11 +93,13 @@
     background-color: rgb(70, 184, 80);
     color: white;
     font-weight: bold;
+    
 }
 
 .ingredient.card-body>.card-text{
     display:flex;
     flex-direction: row;
+    font-size: 100%;
 }
 
 .ingredient.card-body>.card-text>p{
@@ -48,6 +108,20 @@
 .no-suggestions {
     color: #999;
     padding: 0.5rem;
+  }
+
+  .add-ingredient{
+    background-color: rgb(97, 202, 106);
+    padding: 5px;
+    margin-right: 10%;
+    margin-bottom: 70px;
+    color: white;
+    font-size: 2em;
+  }
+
+  .add-ingredient:hover{
+    cursor: pointer;
+    background-color: rgb(90, 161, 96)
   }
   
 .suggestions {

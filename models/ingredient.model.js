@@ -30,6 +30,7 @@ const ingredientSchema = new Schema({
 
 	ingredientID: {
 		type: String,
+		unique: true,
 	},
 
 }, {

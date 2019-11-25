@@ -59,7 +59,7 @@
     /*margin: 0 1em 1em 1em;*/
 
     white-space: nowrap;
-    background-image: url("../images/food_lowbr.jpg");
+    background-image: url("../images/food-background4.jpg");
     height: 600px;
     width: 100%;
     background-size: cover;
@@ -72,6 +72,7 @@
     white-space: nowrap;
     padding: 2em 0 0 0;
     font-variant: small-caps;
+    text-shadow: 5px 5px #000000;
     font-size: 5em;
     font-weight: bold;
     color: white;
@@ -81,11 +82,12 @@
 
   #home  #Splash h2 {
     text-align: center;
-    width: 300px;
+    width: 100%;
     margin: 1em 1em 1em 1em;
     padding: 0;
-    font-size: 1.2em;
+    font-size: 1.5em;
     font-weight: bold;
+    text-shadow: 2px 2px #000000;
     color: white;
   }
 

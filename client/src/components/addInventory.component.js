@@ -112,9 +112,10 @@ export default class AddInventoryItem extends Component{
     render(){
         return(
             <div>
-            <Button variant="primary" onClick={this.toggle}>
-              Add Food Item
-            </Button>
+
+            <div className="btn d-flex justify-content-end"  onClick={this.toggle}>
+                <i class="fas fa-plus add-ingredient"></i>
+            </div>
       
             <Modal show={this.state.modal} onHide={this.toggle} animation={false}>
               <Modal.Header closeButton>

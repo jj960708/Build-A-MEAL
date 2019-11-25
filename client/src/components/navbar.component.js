@@ -1,13 +1,14 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 //component for navigating through the app
+import './stylesheets/navbar.css';
 export default class Navbar extends Component {
   
   render() {
     return (
-      <nav className="navbar navbar-dark bg-dark navbar-expand-lg">
-        <Link to="/" className="navbar-brand">Build A Meal</Link>
-        <div className="collpase navbar-collapse">
+      <nav className="navbar fixed-top navbar-light bg-light navbar-expand-lg">
+        <Link to="/" className="navbar-brand">Build-A-Meal</Link>
+        <div className="collapse navbar-collapse">
         <ul className="navbar-nav mr-auto">
           <li className="navbar-item">
           <Link to="/login" className="nav-link">Login</Link>

@@ -14,6 +14,8 @@ export default class UseRecipe extends Component{
 
         this.toggle  = this.toggle.bind(this);
         this.displayIngredientForm = this.displayIngredientForm.bind(this);
+        this.displayDangerAlert = this.displayDangerAlert.bind(this);
+        this.displaySuccessAlert = this.displaySuccessAlert.bind(this);
         this.onChangeIngredient = this.onChangeIngredient.bind(this);
         this.onChangeUnit = this.onChangeUnit.bind(this);
         this.onChangeAddDate = this.onChangeAddDate.bind(this);
@@ -21,27 +23,96 @@ export default class UseRecipe extends Component{
         this.onChangeQuantity = this.onChangeQuantity.bind(this);
         this.onSubmit = this.onSubmit.bind(this);
         this.displayMissedIngredients = this.displayMissedIngredients.bind(this);
+        this.EditInventoryItem = this.EditInventoryItem.bind(this);
+        this.deleteInventoryItem = this.deleteInventoryItem.bind(this);
         this.state = {
             token: Cookies.get('token'),
             modal: false,
             ingredients: [],
             unitList: ['g', 'kg', 'lbs', 'oz', 'cups', 'ml', 'l', 'tsps', 'tbsps', 'qt', 'bunch', 'rip', 'scoops', 'leaves', 'drops', 'sheets', 'slices', 'inches', 'stalks', 'sticks', 
             'strips', 'sprigs', 'dashes', 'pinches'],
-            unit: new String()
+            unit: new String(),
+            override: false,
+            errorAlert: [],
+            successAlert: []
         }
     }    
 
-    onSubmit(e){
-
-        //alert(inventoryItem);
-
+    async onSubmit(e){
+        var recipebody = {
+            ingredients: this.state.ingredients,
+            override: this.state.override
+        }
         let headers = {
             'x-access-token': this.state.token 
         };
-        axios.post('http://localhost:5000/api/recipe/useRecipe/' + this.props.id, this.state.ingredients, {headers: headers}).then(res => console.log(res.data));
+        axios.post('http://localhost:5000/api/recipe/useRecipe/' + this.props.id, recipebody, {headers: headers}).then(async (res) => {
+            console.log(res.data)
+            for(var i = 0; i < res.data.length; i++){
+                
+                if(res.data[i].success === false){
+                    var alerts = this.state.errorAlert;
+                    alerts.push(res.data[i].msg);
+                    this.setState({
+                        errorAlert: alerts
+                    })
+                    break;
+                } else{
+                    var alerts = this.state.successAlert;
+                    if(res.data[i].remove === false){
+
+                        await this.EditInventoryItem(res.data[i].ingredient, res.data[i].newQuantity)
+                        
+                        alerts.push(res.data[i].msg);
+                        this.setState({
+                            successAlert: alerts
+                        })
+                    }else{
+                        await this.deleteInventoryItem(res.data[i].ingredient._id)
+                        alerts.push(res.data[i].msg);
+                        this.setState({
+                            successAlert: alerts
+                        })
+                    }
+                }
+            } 
+        });
+
         this.toggle();
         //window.location = "/inventory";
     }
+
+    deleteInventoryItem(id) { //deletes the inventory item from the users inventory list upon execution
+        let headers = {
+          'x-access-token': this.state.token    //adds the users token to the get request (to be verified by Auth.jsx middleware)  
+        };
+        axios.delete('http://localhost:5000/api/inventory/' + id, {headers: headers, data:null}).then(res => console.log(res.data));
+      }
+
+    EditInventoryItem(ingredient, quantity){ 
+        const inventoryItem = {
+            name: ingredient.IngredientName,
+            from: ingredient.inventoryIngredientAdded,
+            expires: ingredient.inventoryIngredientExpiration,
+            quantity: quantity,
+            unit: ingredient.unit
+        }
+        console.log(inventoryItem);
+        let headers = {
+            'x-access-token': this.state.token 
+        };
+        axios.post('http://localhost:5000/api/inventory/update/' + ingredient._id, inventoryItem, {headers: headers}).then(
+          res => {
+            console.log(res.data);
+            this.toggle();
+            //window.location = "/inventory";
+          }).catch (err => {
+              console.log(err);
+          });
+
+    }
+
+
 
     componentWillReceiveProps(nextProps) {
         var ingredients = [];
@@ -57,6 +128,8 @@ export default class UseRecipe extends Component{
         }
         this.setState({
             ingredients: ingredients
+        }, () => {
+            console.log(this.state.ingredients);
         });
     }
 
@@ -129,6 +202,25 @@ export default class UseRecipe extends Component{
         })
     }
 
+    displaySuccessAlert(){
+        return this.state.successAlert.map(item => {
+            return (
+                <div class="alert alert-success" role="alert">
+                    {item}
+                </div> 
+            )
+        })
+    }
+    displayDangerAlert(){
+        return this.state.errorAlert.map(item => {
+            return (
+                <div class="alert alert-danger" role="alert">
+                    {item}
+                </div> 
+            )
+        })
+    }
+
     displayMissedIngredients(){
         return this.props.missedIngredients.map(item => {
             return (
@@ -140,6 +232,8 @@ export default class UseRecipe extends Component{
     render(){
         return(
             <div>
+            {this.displaySuccessAlert()}
+            {this.displayDangerAlert()}
             <Button variant="primary" onClick={this.toggle}>
               Use Recipe
             </Button>

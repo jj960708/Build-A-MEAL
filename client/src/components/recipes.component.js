@@ -238,36 +238,39 @@ export default class recipeList extends Component {
 
     render (){
        return(
-        <div className="container d-flex flex-column align-items-center">
-         
-        <h3>Recipes</h3>
-        <div className="row" >
-        <Button variant="primary" onClick={(e)=> this.sortByPreptime()}>
-              Prep Time
-            </Button>
-        <div style={{width: '200px'}}>
-        <Select
-              name="form-dept-select"
-              
-              onChange={(e)=> this.Cusisinetype(e.value)}
-              options={this.cusineoptions}
-          />
+        <div id="recipes" className="container d-flex flex-column align-items-center">
+        <div id = "recipe-card" className="card"> 
+        <div className= "card-header recipes-header"> <h1>Recipes</h1>
+          <div className="row d-flex justify-content-center" >
+          <Button variant="primary" onClick={(e)=> this.sortByPreptime()}>
+                Prep Time
+              </Button>
+          <div style={{width: '200px'}}>
+          <Select
+                name="form-dept-select"
+                
+                onChange={(e)=> this.Cusisinetype(e.value)}
+                options={this.cusineoptions}
+            />
+          </div>
+          <div style={{width: '200px'}}>
+          <Select
+                name="form-dept-select"
+                onChange={(e)=> this.MealType(e.value)}
+                options={this.mealoptions}
+                
+            />
+          </div>
+          </div>
         </div>
-        <div style={{width: '200px'}}>
-        <Select
-              name="form-dept-select"
-              onChange={(e)=> this.MealType(e.value)}
-              options={this.mealoptions}
-              
-          />
-        </div>
-        </div>
+        <div className="card-body">
         <div className="container" >
           <div className = "row d-flex justify-content-center">
               { this.recipeList() }
           </div>
         </div>
-        
+        </div>
+       </div> 
       </div>
       )
     }

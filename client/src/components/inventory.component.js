@@ -17,7 +17,7 @@ const InventoryItem = props => (
         <div className="ingredient card-body" >
           <div className="card-text">
             <p>
-              {props.item.inventoryIngredientQuantity} {props.item.unit}
+              {Math.round(props.item.inventoryIngredientQuantity)} {props.item.unit}
             </p>
             <p>
               {props.item.inventoryIngredientExpiration}
@@ -62,7 +62,7 @@ export default class InventoryList extends Component {
                   this.setState({
                     inventory: response.data    //sets the inventory space               
                   })
-                  console.log(this.state.inventory);
+                  //console.log(this.state.inventory);
                 }
 
               }).catch(error => {
@@ -85,7 +85,7 @@ export default class InventoryList extends Component {
       this.setState({
         editKey: id,
       }, () => {
-        console.log("editKey ==", this.state.editKey);
+        //console.log("editKey ==", this.state.editKey);
         this.toggleEdit();
       });
     }
@@ -99,7 +99,7 @@ export default class InventoryList extends Component {
     inventoryList() { //  generates the inventory list front-end based off the inventory list stored in the components state  
         return this.state.inventory.map(item => {
           return (
-          <div className = "col-4-md">
+          <div className = "col-4-md inventory-item">
             <InventoryItem item={item} editInventoryItem = {this.editInventoryItem} deleteInventoryItem={this.deleteInventoryItem} key={item._id}/>
           </div>
           );
@@ -118,8 +118,9 @@ export default class InventoryList extends Component {
         return(
         <div id="inventory">
           <div className="container d-flex flex-column align-items-center">
-            <h1>Inventory</h1>
-            <div className = "row d-flex justify-content-center">
+            <div className="card inventory-card">
+            <h1 class = "card-header">Inventory</h1>
+            <div className = "row d-flex justify-content-center inventory-items">
                 { this.inventoryList() }
             </div>
 
@@ -127,6 +128,7 @@ export default class InventoryList extends Component {
               <AddInventoryItem />
             </div>
             {this.state.isEditItemState && <EditInventoryItem toggle={this.toggleEdit} id={this.state.editKey}/>}
+          </div>
           </div>
         </div>
       )

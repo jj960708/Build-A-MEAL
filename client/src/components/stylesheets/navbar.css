@@ -1,0 +1,17 @@
+.navbar{
+    background-color: rgb(70, 184, 80) !important;
+    opacity: 90%;
+}
+
+.navbar-brand{
+    font-size:2em !important;
+    font-weight: bold;
+    color: white !important;
+}
+
+.nav-link{
+    font-size: 1.3em !important;
+    opacity: 100%;
+
+    color: white !important;
+}

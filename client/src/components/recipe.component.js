@@ -8,7 +8,7 @@ const queryString = require('query-string');
 //component for recipe card
 const RecipeItem = props => (
     <div className="row">
-    <div className="card" style={{width: 100 + '%', height: 10 + "rem"}}>
+    <div className="card recipe-step" style={{width: 100 + '%', height: 10 + "rem"}}>
       <div className="card-body">
         {props.item.number != -1 && <h5 className="card-title">Step number {props.item.number}</h5>}
           <p>
@@ -45,26 +45,26 @@ export default class GetRecipeItem extends Component {
     
     async componentDidMount(){
         console.log(this.props.match.params.id);
-        // axios.get(`http://localhost:5000/api/recipe/find/${this.props.match.params.id}`)
-        //     .then(response => {
-        //         if(response.data){
-        //           console.log(response);
-        //           this.setState({
-        //             recipe: response.data[0].steps
-        //           })
+        axios.get(`http://localhost:5000/api/recipe/find/${this.props.match.params.id}`)
+            .then(response => {
+                if(response.data){
+                  console.log(response);
+                  this.setState({
+                    recipe: response.data[0].steps
+                  })
 
-        //         }
-        //             return console.log(response.data);
+                }
+                    return console.log(response.data);
 
-        //       }).catch(error => {
-        //         this.setState({
-        //           recipe: [{
-        //             number:-1,
-        //             step:"RECIPE INSTUCTIONS NOT FOUND"
-        //           }] 
-        //         });
-        //         console.log(error);
-        //     });
+              }).catch(error => {
+                this.setState({
+                  recipe: [{
+                    number:-1,
+                    step:"RECIPE INSTUCTIONS NOT FOUND"
+                  }] 
+                });
+                console.log(error);
+            });
       await this.restoreState();
       console.log("restored state!");
       
@@ -142,20 +142,27 @@ export default class GetRecipeItem extends Component {
         <div className="container card w-75 d-flex flex-column align-items-center" >
           
    
-          
+          <div className="recipe-image">
           <img className="card-img-top" src={this.state.image} alt={this.state.title}/>
+          </div>
           <div class="card-body">
-          <h5 class="card-title">{this.state.title}</h5>
+          <h1 class="card-title">{this.state.title}</h1>
     
         </div>
           <div className = "">
               <div className = "recipe-ingredients">
                 <h3>Ingredients</h3>
+                <ul>
                 { this.displayIngredients() }
+                </ul>
               </div>
-              {/* { this.recipeList() } */}
+              <div>
+                { this.recipeList() }
+              </div>
           </div>
+          <div className ="use-recipe">
           <UseRecipe id={this.props.match.params.id} missedIngredients={this.state.missedIngredients} usedIngredients={this.state.usedIngredients}/>
+          </div>
         </div>
       </div>
         )

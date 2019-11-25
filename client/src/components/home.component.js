@@ -1,6 +1,6 @@
 import React from 'react';
 import './stylesheets/home.css';
-import background from "./images/sunny.jpg"
+import background from "./images/food-background2.jpg"
 //home component to explain some info on the web app
 export default class Login extends React.Component{
   render(){
@@ -9,7 +9,7 @@ export default class Login extends React.Component{
       <div id="Splash" className= "d-flex flex-column align-items-center">
         <h1>Build-A-Meal</h1>
         <h2>Find recipes faster, smarter, and easier.</h2>
-        <a className="navbar-text btn btn-primary" href="/signup" style={{color: "white", fontWeight: "bold", fontSize: 20}}>Start Now</a>
+        <a className="navbar-text btn btn-primary" href="/signup" style={{color: "white", fontWeight: "bold", fontSize: 25}}>Start Now</a>
       </div>
     {/* <!-- Search Bar !--> */}
 
