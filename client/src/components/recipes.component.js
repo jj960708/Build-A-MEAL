@@ -15,13 +15,13 @@ const RecipeItem = props => (
   */
   <Link to={"/GetRecipe/"+props.item.id+"?"+props.info}>
     <div className="card recipe-card" style={{width: 18 + 'rem'}}  >
-      <img src={props.item.image} alt={props.item.title}/>
+      <img id="recipe-image" src={props.item.image} alt={props.item.title}/>
       <div className="card-body">
         <h5 className="card-title">{props.item.title}</h5>
         
-          <p>
+          {/* <p>
             {props.item.readyInMinutes}
-          </p>
+          </p> */}
       </div>
       
     </div>
