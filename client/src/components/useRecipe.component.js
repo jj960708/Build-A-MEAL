@@ -6,7 +6,8 @@ import axios from 'axios';
 import Cookies from 'js-cookie';
 import "react-datepicker/dist/react-datepicker.css";
 import Autocomplete from './autocomplete.component';
-
+//component for user to select a recipe they used in order for the ingredients used
+//to be deducted from the user's inventory
 export default class UseRecipe extends Component{
     constructor(props) {
         super(props);

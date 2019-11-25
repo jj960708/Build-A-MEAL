@@ -6,7 +6,7 @@ import axios from 'axios';
 import Cookies from 'js-cookie';
 import "react-datepicker/dist/react-datepicker.css";
 import Autocomplete from './autocomplete.component';
-
+//edit inventory component to allow user to change info on existing ingredients
 export default class EditInventoryItem extends Component{
     constructor(props) {
         super(props);
@@ -64,7 +64,7 @@ export default class EditInventoryItem extends Component{
               console.log(error);
           });
     }
-
+    //update the ingredient info and submit changed ingredient to the invenotry
     onSubmit(e){  
         const inventoryItem = {
             name: this.state.name,

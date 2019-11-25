@@ -6,7 +6,7 @@ const m_b_10 = {
 };
 
 
-
+//component for logging in
 export default class Login extends Component{
   constructor(props) {
     super(props);
@@ -40,7 +40,7 @@ export default class Login extends Component{
           password: e.target.value
       })    
   }
-
+  //if successful, bring user to inventory window
   onSubmit(e){
     e.preventDefault();
 

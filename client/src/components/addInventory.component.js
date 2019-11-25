@@ -7,6 +7,7 @@ import Cookies from 'js-cookie';
 import "react-datepicker/dist/react-datepicker.css";
 import Autocomplete from './autocomplete.component';
 
+//component for adding an ingredient to the inventory
 export default class AddInventoryItem extends Component{
     constructor(props) {
         super(props);
@@ -31,7 +32,7 @@ export default class AddInventoryItem extends Component{
             unit: new String()
         }
     }    
-
+    //set the values of the ingredient info and add it to the database
     onSubmit(e){
         
         const inventoryItem = {

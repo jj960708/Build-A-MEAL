@@ -6,7 +6,7 @@ const m_b_10 = {
 };
 
 
-
+//component for user login
 export default class Login extends Component{
   constructor(props) {
     super(props);
@@ -34,7 +34,7 @@ export default class Login extends Component{
           password: e.target.value
       })    
   }
-
+  //bring logged in user to his/her inventory
   onSubmit(e){
     e.preventDefault();
 

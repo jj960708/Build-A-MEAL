@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-
+//component for navigating through the app
 export default class Navbar extends Component {
   
   render() {
