@@ -9,6 +9,7 @@ const jwt = require("jsonwebtoken");
 module.exports = router;
 const jwtSecret = "mysecret";
 
+//validation for user sign-up
 router.post(
   "/",
   [

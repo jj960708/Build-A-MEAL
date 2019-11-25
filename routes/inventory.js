@@ -7,6 +7,7 @@ const Ingredient = require("../models/ingredient.model");
 const { check, validationResult } = require("express-validator");
 ObjectId = require('mongodb').ObjectID;
 
+//get ingredients in the inventory
 const get_inventory_ingredients = async function(inventoryList){
     result = [];
     //console.log("inventoryList", inventoryList);
@@ -40,6 +41,7 @@ const get_inventory_ingredients = async function(inventoryList){
     return result;
 }
 
+
 router.get("/me", auth, async (req, res) => {
     
     try{
@@ -58,6 +60,7 @@ router.get("/me", auth, async (req, res) => {
 
 });
 
+//get inventory ingredient by id
 router.get("/inventoryIngredient/:id", auth, async(req, res)=>{
     try{
         const inventoryIngredient = await InventoryIngredient.findById(req.params.id)
@@ -72,6 +75,7 @@ router.get("/inventoryIngredient/:id", auth, async(req, res)=>{
     }
 });
 
+//delete ingredient from the inventory
 router.delete('/:id', auth, async(req, res) => {
     var inventory = await Inventory.findOne({user:req.user.id})
     inventory.IngredientName.remove(req.params.id);
@@ -85,6 +89,7 @@ router.delete('/:id', auth, async(req, res) => {
     .catch(err => res.status(400).json('Error: ' + err));
 });
 
+//update ingredient after an edit
 router.post('/update/:id', auth, async(req, res) => {
 
     InventoryIngredient.findById(req.params.id)
@@ -107,6 +112,7 @@ router.post('/update/:id', auth, async(req, res) => {
       .catch(err => res.status(400).json('Error: ' + err));
 });
 
+//list of ingredients
 router.get('/ingredientslist', (req,res)=>{
     Ingredient.find({}, (err, ingredients)=>{
         let ingredientsList = ingredients.map(ingredient => {
@@ -116,6 +122,7 @@ router.get('/ingredientslist', (req,res)=>{
     })
 })
 
+//creates inventory for a new user
 router.post('/',auth,async(req,res) =>{ 
     const errors = validationResult(req);
     if (!errors.isEmpty()){
@@ -144,6 +151,7 @@ router.post('/',auth,async(req,res) =>{
     }
 }
 );
+
 
 router.post('/ingredients',auth,async(req,res)=>{
 
