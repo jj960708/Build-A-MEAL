@@ -8,14 +8,30 @@ import Select from 'react-select';
 import './stylesheets/recipes.css';
 const queryString = require('query-string');
 
+
+var recipe_item_style = {
+  width: 18 + 'rem',
+}
+
 const RecipeItem = props => (
   /*
     Generates RecipeItem card. Each recipe item card has the recipe name along with the image of the recipe
     When the recipe is clicked on, the page will redirect to display the recipe instructions.
   */
   <Link to={"/GetRecipe/"+props.item.id+"?"+props.info}>
-    <div className="card recipe-card" style={{width: 18 + 'rem'}}  >
+ <div className="card recipe-card" style={recipe_item_style}  >
+      {props.missing_ingredients && 
+          <div id= "missing-ingredients" class="alert alert-warning" role="alert">
+              Missing Ingredients!
+            </div>
+      }
+      {!props.missing_ingredients && 
+          <div id= "missing-ingredients" class="alert alert-success" role="alert">
+              Have all Needed Ingredients
+            </div>
+      }
       <img id="recipe-image" src={props.item.image} alt={props.item.title}/>
+      
       <div className="card-body">
         <h5 className="card-title">{props.item.title}</h5>
         
@@ -135,10 +151,14 @@ export default class recipeList extends Component {
       return this.state.selectedrecipe.map(item => {
         var query = queryString.stringify({
           info:JSON.stringify(item), 
-        }); 
+        });
+        var missing_ingredients = false;
+        if(item.missedIngredientCount > 0){
+          missing_ingredients = true;
+        }
         return (
         <div className = "col-4-md">
-          <RecipeItem info = {query} item={item}  key={item.id} getRecipeItem = {this.getRecipeItem} />
+          <RecipeItem missing_ingredients = {missing_ingredients} info = {query} item={item}  key={item.id} getRecipeItem = {this.getRecipeItem} />
         </div>
         );
       })
@@ -265,7 +285,7 @@ export default class recipeList extends Component {
         </div>
         <div className="card-body">
         <div className="container" >
-          <div className = "row d-flex justify-content-center">
+          <div className = "row d-flex justify-content-center recipes">
               { this.recipeList() }
           </div>
         </div>

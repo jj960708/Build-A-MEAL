@@ -29,6 +29,7 @@ export default class UseRecipe extends Component{
             token: Cookies.get('token'),
             modal: false,
             ingredients: [],
+            missedIngredients: [],
             unitList: ['g', 'kg', 'lbs', 'oz', 'cups', 'ml', 'l', 'tsps', 'tbsps', 'qt', 'bunch', 'rip', 'scoops', 'leaves', 'drops', 'sheets', 'slices', 'inches', 'stalks', 'sticks', 
             'strips', 'sprigs', 'dashes', 'pinches'],
             unit: new String(),
@@ -39,46 +40,73 @@ export default class UseRecipe extends Component{
     }    
 
     async onSubmit(e){
-        var recipebody = {
-            ingredients: this.state.ingredients,
-            override: this.state.override
+        var reduce_ingredients;
+        if(this.state.missedIngredients.length > 0){
+            reduce_ingredients = window.confirm("You are still missing ingredients! Still use this recipe anyway?")
+        }else{
+            reduce_ingredients = true;
         }
-        let headers = {
-            'x-access-token': this.state.token 
-        };
-        axios.post('http://localhost:5000/api/recipe/useRecipe/' + this.props.id, recipebody, {headers: headers}).then(async (res) => {
-            console.log(res.data)
-            for(var i = 0; i < res.data.length; i++){
-                
-                if(res.data[i].success === false){
-                    var alerts = this.state.errorAlert;
-                    alerts.push(res.data[i].msg);
-                    this.setState({
-                        errorAlert: alerts
-                    })
-                    break;
-                } else{
-                    var alerts = this.state.successAlert;
-                    if(res.data[i].remove === false){
-
-                        await this.EditInventoryItem(res.data[i].ingredient, res.data[i].newQuantity)
-                        
+        if(reduce_ingredients){
+            var recipebody = {
+                ingredients: this.state.ingredients,
+                missedIngredients: this.state.missedIngredients,
+                override: this.state.override
+            }
+            let headers = {
+                'x-access-token': this.state.token 
+            };
+            axios.post('http://localhost:5000/api/recipe/useRecipe/' + this.props.id, recipebody, {headers: headers}).then(async (res) => {
+                console.log(res.data)
+                var was_error = false
+                var alerts;
+                for (var i = 0; i < res.data.length; i++){
+                    if(res.data[i].success === false){
+                        was_error = true;
+                        alerts = this.state.errorAlert;
                         alerts.push(res.data[i].msg);
                         this.setState({
-                            successAlert: alerts
-                        })
-                    }else{
-                        await this.deleteInventoryItem(res.data[i].ingredient._id)
-                        alerts.push(res.data[i].msg);
-                        this.setState({
-                            successAlert: alerts
+                            errorAlert: alerts
                         })
                     }
                 }
-            } 
-        });
+                if(alerts.length < res.data.length){
+                    var use_recipe = window.confirm("Errors found! Use recipe anyway?")
+                }else{
+                    var use_recipe = false
+                }
+                if(use_recipe){
+                    
+                    for(var i = 0; i < res.data.length; i++){
+                        var alerts = this.state.successAlert;
+                        if(res.data[i].success === true){
+                            if(res.data[i].remove === false){
+                                await this.EditInventoryItem(res.data[i].ingredient, res.data[i].newQuantity)                   
+                                alerts.push(res.data[i].msg);
+                                this.setState({
+                                    successAlert: alerts
+                                })
+                            }else{
+                                await this.deleteInventoryItem(res.data[i].ingredient._id)
+                                alerts.push(res.data[i].msg);
+                                this.setState({
+                                    successAlert: alerts
+                                })
+                            }
+                        }  
+                    }
+                } 
+            });
 
-        this.toggle();
+            this.toggle();
+        }
+        else{
+            var alerts = this.state.successAlert;
+            alerts.push("Recipe was not used");
+            this.setState({
+                successAlert: alerts
+            });
+            this.toggle();
+        }
         //window.location = "/inventory";
     }
 
@@ -116,6 +144,9 @@ export default class UseRecipe extends Component{
 
     componentWillReceiveProps(nextProps) {
         var ingredients = [];
+        this.setState({
+            missedIngredients: this.props.missedIngredients
+        });
         for(var i = 0; i < nextProps.usedIngredients.length; i++){
             var ingredient = {
                 name: nextProps.usedIngredients[i].name,

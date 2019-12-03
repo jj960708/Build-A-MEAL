@@ -151,7 +151,7 @@ export default class AddInventoryItem extends Component{
                     </Form.Group>
                     <Form.Group>
                     <Form.Label>Quantity</Form.Label>
-                    <Form.Control type="number" onChange={this.onChangeQuantity} value={this.state.quantity}/>
+                    <Form.Control type="number" min={1} onChange={this.onChangeQuantity} value={this.state.quantity}/>
                     </Form.Group>
                     <Form.Group>
                     <Form.Label>Unit</Form.Label>

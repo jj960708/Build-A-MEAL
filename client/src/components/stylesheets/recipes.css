@@ -1,8 +1,19 @@
 .recipe-card{
-    max-height: 320px;
-    
+    margin: 10px;
 }
 
 #recipe-image{
     max-height: 250px;
 }
+
+#missing-ingredients{
+    display: inline;
+    position: relative;
+    margin: 0;
+    
+}
+
+.recipes{
+    height: 100%;
+}
+

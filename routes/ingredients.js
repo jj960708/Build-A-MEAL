@@ -5,6 +5,11 @@ const axios = require('axios');
 let IngredientIndex = require('../models/ingredientIndex.model');
 let Ingredient = require('../models/ingredient.model');
 
+router.route('/getInput').post(async (req, res) => {
+    console.log(req.body.data);
+    return res.status(200).json({msg: "SUCCESS!"})
+});
+
 //allow user to edit the ingredient data
 router.route('/ingredientsEdit').post(async (req, res) => {
     Ingredient.find({}, async (err, ingredients)=>{

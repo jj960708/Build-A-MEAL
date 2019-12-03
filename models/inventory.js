@@ -8,12 +8,19 @@ const inventorySchema = new Schema({
 		ref:'User'
 
 	},
-	IngredientName: [{ type: Schema.Types.ObjectId, ref: 'inventoryIngredient' }]
+	IngredientName: {
+		type: [{ type: Schema.Types.ObjectId, ref: 'inventoryIngredient' }],
+		validate: [arrayLimit, '{PATH} exceeds the limit of 10']
+	}
 
 }, {
 	timestamps: true,
 });
 
 const inventory = mongoose.model('inventory', inventorySchema);
+
+function arrayLimit(val) {
+	return val.length <= 10;
+}
 
 module.exports = inventory;

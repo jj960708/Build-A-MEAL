@@ -16,12 +16,12 @@ const get_inventory_ingredients = async function(inventoryList){
         var inventoryIngredient = await InventoryIngredient.findOne({_id: new ObjectId(inventoryList[i])});
         var ingredient = await Ingredient.findOne({ingredientName: inventoryIngredient.IngredientName});
         if(!ingredient){
-            //console.log("description:", ingredient);
+            console.log("description:", ingredient);
             //console.log("Not a valid ingredient!");
         }
         var measure_word = ingredient["ingredientQuantityMeasureValue"];
         var options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
-        //console.log(inventoryIngredient["inventoryIngredientAdded"].toLocaleDateString("en-US", options));
+        console.log(inventoryIngredient);
         inventoryIngredient = {
             "_id": inventoryList[i],
             "IngredientName": inventoryIngredient["IngredientName"],
@@ -45,6 +45,8 @@ const get_inventory_ingredients = async function(inventoryList){
 router.get("/me", auth, async (req, res) => {
     
     try{
+        console.log("in /me");
+        console.log(req.user.id);
         const inventory = await Inventory.findOne({user:req.user.id}).populate('user','name');
         if (!inventory){
             return res.status(404).json({msg:'There is no inventory for this user'})

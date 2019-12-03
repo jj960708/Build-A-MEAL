@@ -138,39 +138,74 @@ const addIngredient = function(ID){
     
 }
 
+const find_ingredient_substring = async function(inventory, ingredient_use){
+    for(var i = 0; i < inventory.IngredientName.length; i++){
+        var ingredient = await InventoryIngredient.findOne({_id: inventory.IngredientName[i]});        
+        console.log(ingredient.IngredientName);
+        if(ingredient.IngredientName.search(ingredient_use.name) != -1){
+            //console.log("you've found the right ingredient!");
+            return(ingredient)
+        }
+        
+    }
+    return null;
+}
+
 //use recipe and subtract the ingredients used from the inventory
 router.post("/useRecipe/:id", auth, async (req, res) => {
 
     try{
-        console.log(req.body);
         var ingredientslist = req.body.ingredients;
+        var missedIngredients = req.body.missedIngredients;
         var inventory = await Inventory.findOne({user:req.user.id})
         
 
         //console.log(inventory);
         var RecipeResponse = [];
+        for(var i = 0; i < missedIngredients.length; i++){
+            var ingredientItem = await Ingredient.findOne({ingredientID: missedIngredients[i].id});
+            if(!ingredientItem){
+                //adds the ingredient item to my available ingredients
+                console.log("adding ingredient: ", missedIngredients[i].name);
+                addIngredient(missedIngredients[i].id);
+                var ingredient = await find_ingredient_substring(inventory, missedIngredients[i]);
+                if(ingredient == null){
+                    console.log("could not find the right ingredient");
+                    return 0;
+                }
+            }
+        }
+
         for(var i = 0; i < ingredientslist.length; i++){
             var ingredientItem = await Ingredient.findOne({ingredientID: ingredientslist[i].id});
             if(!ingredientItem){
                 //adds the ingredient item to my available ingredients
                 //console.log("adding ingredient!\n");
                 addIngredient(ingredientslist[i].id);
-                for(var j = 0; j < inventory.IngredientName.length; j++){
-                    var ingredient = await InventoryIngredient.findOne({_id: inventory.IngredientName[j]});        
-                    console.log(ingredient.IngredientName);
-                    if(ingredient.IngredientName.search(ingredientslist[i].name) != -1){
-                        console.log("you've found the right ingredient!");
-                    }
-                    break;
+                var ingredient = await find_ingredient_substring(inventory, ingredientslist[i]);
+                if(ingredient == null){
+                    console.log("could not find the right ingredient");
+                    return 0;
                 }
-
             }else{
                 console.log(ingredientItem.ingredientName);
                 var ingredient = await InventoryIngredient.findOne({IngredientName: ingredientItem.ingredientName, user: req.user.id });
             }
+            if(ingredient == null){
+                var ingredient = await find_ingredient_substring(inventory, ingredientslist[i])
+                RecipeResponse.push({
+                    success: false,
+                    error: true, 
+                    remove: false,
+                    substitute: true,
+                    msg: "ERROR: Exact ingredient not found. Suggesting " + ingredient.IngredientName+ " instead.",
+                    ingredient: ingredient,                   
+                });
+                continue;
+            }
             var quantity_deduct;
 
-            if(ingredient.unit != ingredientslist[i].unit && (ingredient.unit != "" && ingredientslist[i].unit != "")){
+            if(ingredient && ingredient.unit != ingredientslist[i].unit && (ingredient.unit != "" && ingredientslist[i].unit != "")){
                 var convert_req = "https://api.spoonacular.com/recipes/convert"
                 console.log("in the if statement");
                 console.log("ingredients: ",ingredientslist[i]);
@@ -204,6 +239,7 @@ router.post("/useRecipe/:id", auth, async (req, res) => {
                     success: false,
                     error: true, 
                     remove: false,
+                    substitute: false,
                     msg: "ERROR: Not enough " + ingredient.IngredientName,
                     ingredient: ingredient,
                     newQuantity: newQuantity,
@@ -213,6 +249,7 @@ router.post("/useRecipe/:id", auth, async (req, res) => {
                     success: true,
                     error: false,
                     remove: true,
+                    substitute: false,
                     msg: "Used up all of the " + ingredient.IngredientName,
                     ingredient: ingredient,
                     newQuantity: 0,
@@ -222,6 +259,7 @@ router.post("/useRecipe/:id", auth, async (req, res) => {
                     success: true,
                     error: false,
                     remove: false,
+                    substitute: false,
                     msg: "Reduced appropriate amount from  " + ingredient.IngredientName,
                     ingredient: ingredient,
                     newQuantity: newQuantity,
