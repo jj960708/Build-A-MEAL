@@ -58,7 +58,7 @@ export default class UseRecipe extends Component{
             axios.post('http://localhost:5000/api/recipe/useRecipe/' + this.props.id, recipebody, {headers: headers}).then(async (res) => {
                 console.log(res.data)
                 var was_error = false
-                var alerts;
+                var alerts = [];
                 for (var i = 0; i < res.data.length; i++){
                     if(res.data[i].success === false){
                         was_error = true;
@@ -69,10 +69,10 @@ export default class UseRecipe extends Component{
                         })
                     }
                 }
-                if(alerts.length < res.data.length){
+                if(alerts.length != 0){
                     var use_recipe = window.confirm("Errors found! Use recipe anyway?")
                 }else{
-                    var use_recipe = false
+                    var use_recipe = true
                 }
                 if(use_recipe){
                     
