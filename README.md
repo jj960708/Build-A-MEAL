@@ -1,7 +1,7 @@
 # Build-A-MEAL
 ## Requirements
 
-For development, you willneed Node.js.
+For development, you will need Node.js.
 
 ### Node
 - #### Node installation on Windows
