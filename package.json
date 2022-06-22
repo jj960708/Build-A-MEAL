@@ -21,7 +21,7 @@
   },
   "homepage": "https://github.com/jj960708/Build-A-MEAL#readme",
   "dependencies": {
-    "async": "^3.1.0",
+    "async": "^3.2.2",
     "await": "^0.2.6",
     "bcryptjs": "^2.4.3",
     "bootstrap": "^4.3.1",
